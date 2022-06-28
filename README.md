@@ -39,9 +39,9 @@ To produce the figures in the paper, run the following Matlab scripts:
 * `figure12B.m` - produce figure 12B
 * `figure12C.m` - produce figure 12C
 
-Each script produces a figure in a Matlab window, saves a copy of the figure in PDF format, and save a copy of the data plotted in the figure in an Excel file.
+Each script produces a figure in a Matlab window, saves a copy of the figure in PDF format, and saves a copy of the data plotted in the figure in an Excel file.
 
-There is no script to produce figure 2 because figure 2 is directly borrowed from [Michaillat & Saez (2021, figure 5)](https://github.com/pascalmichaillat/unemployment-gap).
+Figure 2 is directly borrowed from [Michaillat & Saez (2021, figure 5)](https://github.com/pascalmichaillat/unemployment-gap), so there is no script to produce it.
 
 ### Helper scripts and functions
 
@@ -81,11 +81,11 @@ The 21 figures produced by the code are stored in the folder `figures`, both as 
 
 ### PDF files
 
-The figures produced by the code are saved as PDF files and stored in the subfolder `pdf`. Any PDF file titled `figureX.pdf` corresponds to the figure X in the paper.
+The figures produced by the code are saved as PDF files and stored in the subfolder `pdf`. Any PDF file titled `figureX.pdf` corresponds to figure X in the paper.
 
 ### Excel files
 
-The data underlying all the figures produced by the code are saved as Excel files and  stored in the subfolder `xlsx`. Any Excel file titled `figureX.xlsx` contains the data pertaining to the figure X in the paper.
+The data underlying all the figures produced by the code are saved as Excel files and  stored in the subfolder `xlsx`. Any Excel file titled `figureX.xlsx` contains the data pertaining to figure X in the paper.
 
 ## Software versions
 
