@@ -67,7 +67,7 @@ The figure-producing scripts also call the following Matlab functions:
 * `getUnemploymentPostwar.m` - return quarterly US unemployment rate, 1951Q1--2019Q4
 * `getUnemploymentPandemic.m` - return monthly US unemployment rate, 2020M1--2022M3
 * `getUnemploymentJolts.m` - return monthly US unemployment rate, 2001M1--2022M3
-* `getUnemploymentMS21.m` - return efficient unemployment rate by Michaillat & Saez (2021)
+* `getUnemploymentMS21.m` - return efficient unemployment rate by [Michaillat & Saez (2021)](https://doi.org/10.1016/j.pubecp.2021.100009)
 * `getVacancyRate.m` - return quarterly US vacancy rate, 1930Q1--2022Q1
 * `getVacancyRateDepression.m` - return quarterly US vacancy rate, 1930Q1--1950Q4
 * `getVacancyRatePostwar.m` - return quarterly US vacancy rate, 1951Q1--2019Q4
