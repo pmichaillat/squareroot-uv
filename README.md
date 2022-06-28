@@ -62,6 +62,7 @@ The figure-producing scripts also call the following Matlab functions:
 * `getTimelineDepression.m` - return quarterly timeline for 1930Q1--1950Q4
 * `getTimelinePostwar.m` - return quarterly timeline for 1951Q1--2019Q4
 * `getTimelinePandemic.m` - return quarterly timeline for 2020M1--2022M3
+* `getTimelineJolts.m` - return monthly timeline for 2001M1--2022M3
 * `getUnemployment.m` - return quarterly US unemployment rate, 1930Q1--2022Q1
 * `getUnemploymentDepression.m` - return quarterly US unemployment rate, 1930Q1--1950Q4
 * `getUnemploymentPostwar.m` - return quarterly US unemployment rate, 1951Q1--2019Q4
