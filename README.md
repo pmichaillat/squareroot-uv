@@ -51,7 +51,6 @@ The figure-producing scripts call the following Matlab scripts:
 * `formatScatterPlot.m` - format scatter plots
 * `formatLongPlot.m` - format long plots
 
-
 The figure-producing scripts also call the following Matlab functions:
  
 * `getRecession.m` - return dates of US recessions between 1930Q1 and 2022Q1
