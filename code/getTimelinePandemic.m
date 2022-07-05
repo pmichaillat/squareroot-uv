@@ -1,14 +1,14 @@
-%% getTimelineJolts
+%% getTimelinePandemic
 % 
-% Return monthly timeline for 2001M1--2022M3
+% Return monthly timeline for 2020M1--2022M3
 %
 %% Syntax
 %
-%   timeline = getTimelineJolts()
+%   timeline = getTimelinePandemic()
 %
 %% Output argument
 %
-% * timeline - 255-by-1 column vector
+% * timeline - 27-by-1 column vector
 %
 %% Description
 %
@@ -19,7 +19,7 @@
 % * 2020.25 is 2020M4
 %
 
-function timeline = getTimelineJolts()
+function timeline = getTimelinePandemic()
 
 % Produce timeline
 timeline = [2020:(1/12):2022+1/6]';
