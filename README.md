@@ -1,6 +1,6 @@
 # $u^{\ast} = \sqrt{uv}$ : Code and Data
 
-This repository contains the code and data accompanying the paper "$u^{\ast} = \sqrt{uv}$", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and posted on [arXiv](https://doi.org/10.48550/arXiv.2206.13012) in June 2022.
+This repository contains the code and data accompanying the paper "u* = √uv", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and posted on [arXiv](https://doi.org/10.48550/arXiv.2206.13012) in June 2022.
 
 ## Paper webpage
 
