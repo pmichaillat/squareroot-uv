@@ -14,12 +14,12 @@ The data used as input to produce the results in the paper are stored in the Exc
 
 The results in the paper are produced with MATLAB code. The code is placed in the folder `code`. There are two types of programs:
 
-1. Scripts producing the figures in the paper
-2. Helper scripts and functions called by the figure-producing scripts
+1. MATLAB scripts producing the figures in the paper
+2. MATLAB helper scripts and functions called by the figure-producing scripts
 
 ### Figure-producing scripts
 
-The figures in the paper are produced bythe following scripts:
+The figures in the paper are produced by the following scripts:
 
 + `figure1A.m` – Produce figure 1A
 + `figure1B.m` – Produce figure 1B
