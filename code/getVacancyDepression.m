@@ -1,28 +1,31 @@
 %% getVacancyDepression
 % 
-% Return quarterly vacancy rate in the United States, 1930--1950
+% Return quarterly vacancy rate in the United States, 1930–1950
 %
 %% Syntax
 %
-%   v = getVacancyDepression()
+%   v = getVacancyDepression(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * v - 84-by-1 column vector
+% * pathInput – string 
+% * v – 84-by-1 column vector
 %
 %% Description
 %
-% This function reads the US vacancy rate, 1930--1950, and returns the quarterly average of this monthly series. 
+% This function reads the monthly vacancy rate in the United States, 1930–1950, and returns the quarterly average of the series. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The vacancy rate is produced by Petrosky-Nadeau & Zhang (2020) and stored in data.xlsx.
+% The monthly vacancy rate is produced by Petrosky-Nadeau, Zhang (2021).
 %
 
-function v = getVacancyDepression()
+function v = getVacancyDepression(pathInput)
 
-% Input monthly vacancy rate
-vMonthly = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range',' H3:H254')./100;
+% Read monthly vacancy rate
+vMonthly = readmatrix([pathInput,'HistoricalSeries_JME_2020January.csv'], 'Range', 'D486:D737')./100;
 
 % Take quarterly average of monthly series
-v = monthlyToQuarterly(vMonthly);
+v = monthly2quarterly(vMonthly);

@@ -4,82 +4,100 @@
 %
 %% Description
 %
-% This script produces figure 7B. The figure displays the monthly unemployment gap in the United States, 2020M1--2022M3.
+% This script produces figure 7B and associated numerical results. The figure displays the quarterly labor-market tightness in the United States, 2020–2023.
 %
 %% Output
 %
 % * The figure is saved as figure7B.pdf.
-% * The underlying data are saved in figure7B.xlsx.
+% * The figure data are saved in figure7B.csv.
+% * The numerical results are saved in figure7B.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure7B.pdf'];
+fileData = [pathOutput, 'figure7B.csv'];
+fileResults = [pathOutput, 'figure7B.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePandemic();
+timeline = makeTimeline(2020, 2023);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPandemic();
+[startRecession, endRecession] = getRecessionPandemic(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPandemic();
+u = getUnemploymentPandemic(pathInput);
 
 % Get vacancy rate
-v = getVacancyPandemic();
+v = getVacancyPandemic(pathInput);
 
-%% --- Compute efficient unemployment rate ---
+%% Compute labor-market tightness
 
-uStar = sqrt(u.*v);
+tightness = v ./ u;
 
-%% --- Format figure & plot ---
+%% Produce figure
 
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
-% Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+% Format x-axis
+ax = gca;
+set(ax, xPandemic{:})
 
-% Paint unemployment gap
-a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
+% Format y-axis
+ax.YLim = [0, 2];
+ax.YTick =  [0:0.5:2];
+ax.YLabel.String =  'Tightness';
+
+% Paint recession areas
+xregion(startRecession, endRecession, areaRecession{:});
+
+% Paint gap between tightness and full-employment line
+a = area(timeline(2:end), [ones(size(tightness(2:end))), max(tightness(2:end) - 1,0), min(tightness(2:end) - 1,0)], 'LineStyle', 'none');
 a(1).FaceAlpha = 0;
 a(2).FaceAlpha = 0.2;
 a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = pink;
+a(2).FaceColor = orange;
+a(3).FaceColor = purple;
 
-% Plot actual unemployment rate & efficient unemployment rate
-plot(timeline, u, purpleSetting{:})
-plot(timeline, uStar, pinkSetting{:})
+% Plot labor-market tightness
+plot(timeline, tightness, linePurple{:})
 
-% Populate axes
-set(gca, xSettingPandemic{:})
-set(gca, 'yLim', [0,0.15], 'yTick', [0:0.03:0.15], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%';'15%'])
-ylabel('Share of labor force')
+% Plot full-employment line
+yline(1, linePinkThin{:}, 'Alpha', 1)
 
-% Print figure
-print('-dpdf', 'figure7B.pdf')
+% Save figure
+print('-dpdf', fileFigure)
 
-%% --- Save results ---
-
-file = 'figure7B.xlsx';
-sheet = 'Figure 7B';
-years = floor(timeline);
-months = 1+(timeline-years).*12;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Month', 'Unemployment rate', 'Efficient unemployment rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year', 'Tightness'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, months, u, uStar];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, tightness];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+tightnessMean = mean(tightness);
+tightnessMax = max(tightness);
+tightnessMin = min(tightness);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average labor-market tightness: %4.2f \n', tightnessMean)
+fprintf('* Maximum labor-market tightness: %4.2f \n', tightnessMax)
+fprintf('* Minimum labor-market tightness: %4.2f \n', tightnessMin)
+fprintf('\n')
+diary off

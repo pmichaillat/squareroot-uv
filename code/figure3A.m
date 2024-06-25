@@ -4,78 +4,104 @@
 %
 %% Description
 %
-% This script produces figure 3A. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 1951--2019.
+% This script produces figure 3A and associated numerical results. The figure displays the quarterly unemployment rate, vacancy rate, and FERU in the United States, 1951–2019.
 %
 %% Output
 %
 % * The figure is saved as figure3A.pdf.
-% * The underlying data are saved in figure3A.xlsx.
+% * The figure data are saved in figure3A.csv.
+% * The numerical results are saved in figure3A.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure3A.pdf'];
+fileData = [pathOutput, 'figure3A.csv'];
+fileResults = [pathOutput, 'figure3A.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePostwar();
+timeline = makeTimeline(1951, 2019);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPostwar();
+[startRecession, endRecession] = getRecessionPostwar(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPostwar();
+u = getUnemploymentPostwar(pathInput);
 
 % Get vacancy rate
-v = getVacancyPostwar();
+v = getVacancyPostwar(pathInput);
 
-%% --- Format figure & plot ---
+%% Compute FERU
 
-formatStandardPlot
+uStar = sqrt(u .* v);
 
-%% --- Produce figure ---
+%% Produce figure
 
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xPostwar{:})
+
+% Format y-axis
+ax.YLim = [0, 0.12];
+ax.YTick =  [0:0.03:0.12];
+ax.YTickLabel = [' 0%'; ' 3%'; ' 6%'; ' 9%'; '12%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
-% Paint gap between unemployment & vacancy rates
-a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = orange;
+% Plot unemployment rate, vacancy rate, and FERU
+plot(timeline, u, linePurpleThin{:})
+plot(timeline, v, lineOrangeThin{:})
+plot(timeline, uStar, linePink{:})
 
-% Plot unemployment & vacancy rates
-plot(timeline, u, purpleSetting{:})
-plot(timeline, v, orangeSetting{:})
+% Save figure
+print('-dpdf', fileFigure)
 
-% Populate axes
-set(gca, xSettingPostwar{:})
-set(gca, 'yLim', [0,0.12], 'yTick', [0:0.03:0.12], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%'])
-ylabel('Share of labor force')
-
-% Print figure
-print('-dpdf', 'figure3A.pdf')
-
-%% --- Save results ---
-
-file = 'figure3A.xlsx';
-sheet = 'Figure 3A';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Vacancy rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, u, v];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, u, v, uStar];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+uMean = mean(u);
+uMax = max(u);
+uMin = min(u);
+vMean = mean(v);
+vMax = max(v);
+vMin = min(v);
+uStarMean = mean(uStar);
+uStarMax = max(uStar);
+uStarMin = min(uStar);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average unemployment rate: %4.3f \n', uMean)
+fprintf('* Maximum unemployment rate: %4.3f \n', uMax)
+fprintf('* Minimum unemployment rate: %4.3f \n', uMin)
+fprintf('* Average vacancy rate: %4.3f \n', vMean)
+fprintf('* Maximum vacancy rate: %4.3f \n', vMax)
+fprintf('* Minimum vacancy rate: %4.3f \n', vMin)
+fprintf('* Average FERU: %4.3f \n', uStarMean)
+fprintf('* Maximum FERU: %4.3f \n', uStarMax)
+fprintf('* Minimum FERU: %4.3f \n', uStarMin)
+fprintf('\n')
+diary off

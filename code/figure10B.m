@@ -4,76 +4,100 @@
 %
 %% Description
 %
-% This script produces figure 10B. The figure displays the quarterly labor-market tightness in the United States, 1930--1950.
+% This script produces figure 10B and associated numerical results. The figure displays the quarterly labor-market tightness in the United States, 1930–2023.
 %
 %% Output
 %
 % * The figure is saved as figure10B.pdf.
-% * The underlying data are saved in figure10B.xlsx.
+% * The figure data are saved in figure10B.csv.
+% * The numerical results are saved in figure10B.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure10B.pdf'];
+fileData = [pathOutput, 'figure10B.csv'];
+fileResults = [pathOutput, 'figure10B.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelineDepression();
+timeline = makeTimeline(1930, 2023);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionDepression();
+[startRecession, endRecession] = getRecession(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentDepression();
+u = getUnemployment(pathInput);
 
 % Get vacancy rate
-v = getVacancyDepression();
+v = getVacancy(pathInput);
 
-%% --- Compute labor-market tightness ---
+%% Compute labor-market tightness
 
-theta = v ./ u;
+tightness = v ./ u;
 
-%% --- Format figure & plot ---
+%% Produce figure
 
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xTotal{:})
+
+% Format y-axis
+ax.YLim = [0, 7];
+ax.YTick =  [0:1:7];
+ax.YLabel.String =  'Tightness';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [7,7], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
+
+% Paint gap between tightness and full-employment line
+a = area(timeline, [ones(size(tightness)), max(tightness - 1,0), min(tightness - 1,0)], 'LineStyle', 'none');
+a(1).FaceAlpha = 0;
+a(2).FaceAlpha = 0.2;
+a(3).FaceAlpha = 0.2;
+a(2).FaceColor = orange;
+a(3).FaceColor = purple;
 
 % Plot labor-market tightness
-plot(timeline, theta, purpleSetting{:})
+plot(timeline, tightness, linePurple{:})
 
-% Highlight efficient level of tightness
-yline(1, thinPinkSetting{:})
+% Plot full-employment line
+yline(1, linePinkThin{:}, 'Alpha', 1)
 
-% Populate axes
-set(gca, xSettingDepression{:})
-set(gca, 'yLim', [0,7], 'yTick', [0:1:7])
-ylabel('Labor-market tightness')
+% Save figure
+print('-dpdf', fileFigure)
 
-% Print figure
-print('-dpdf', 'figure10B.pdf')
-
-%% --- Save results ---
-
-file = 'figure10B.xlsx';
-sheet = 'Figure 10B';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Labor-market tightness'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year', 'Tightness'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, theta];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, tightness];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+tightnessMean = mean(tightness);
+tightnessMax = max(tightness);
+tightnessMin = min(tightness);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average labor-market tightness: %4.3f \n', tightnessMean)
+fprintf('* Maximum labor-market tightness: %4.3f \n', tightnessMax)
+fprintf('* Minimum labor-market tightness: %4.3f \n', tightnessMin)
+fprintf('\n')
+diary off

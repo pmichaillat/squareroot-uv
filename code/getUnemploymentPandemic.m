@@ -1,25 +1,31 @@
 %% getUnemploymentPandemic
 % 
-% Return monthly unemployment rate in the United States, 2020M1--2022M3
+% Return quarterly unemployment rate in the United States, 2020–2023
 %
 %% Syntax
 %
-%   u = getUnemploymentPandemic()
+%   u = getUnemploymentPandemic(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * u - 27-by-1 column vector
+% * pathInput – string 
+% * u – 16-by-1 column vector
 %
 %% Description
 %
-% This function reads and returns the monthly unemployment rate in the United States, 2020M1--2022M3.
+% This function reads the monthly unemployment rate in the United States, 2020–2023, and returns the quarterly average of the series. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The unemployment rate is produced by the Bureau of Labor Statistics (2022) and stored in data.xlsx.
+% The monthly unemployment rate is produced by the US Bureau of Labor Statistics (2024i).
 %
 
-function u = getUnemploymentPandemic()
+function u = getUnemploymentPandemic(pathInput)
 
-% Read unemployment rate
-u = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'C1083:C1109')./100;
+% Read monthly unemployment rate
+u = readmatrix([pathInput,'UNRATE.csv'], 'Range', 'B866:B913')./100;
+
+% Take quarterly average of monthly series
+u = monthly2quarterly(u);

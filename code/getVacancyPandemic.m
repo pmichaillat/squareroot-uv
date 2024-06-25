@@ -1,37 +1,45 @@
 %% getVacancyPandemic
 % 
-% Return monthly vacancy rate in the United States, 2020M1--2022M3
+% Return quarterly vacancy rate in the United States, 2020–2023
 %
 %% Syntax
 %
-%   v = getVacancyPandemic()
+%   v = getVacancyPandemic(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * v - 27-by-1 column vector
+% * pathInput – string 
+% * v – 16-by-1 column vector
 %
 %% Description
 %
-% This function constructs and returns the monthly vacancy rate in the United States, 2020M1--2022M3:
+% This function constructs and returns the quarterly vacancy rate in the United States, 2020–2023:
+%
 % # The function reads the monthly vacancy level.
 % # The function reads the monthly labor-force level.
-% # The function divides vacancy level by labor-force level to obtain the vacancy rate.
+% # The function divides vacancy level by labor-force level to obtain the monthly vacancy rate.
+% # The function returns the quarterly average of the monthly vacancy rate. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data sources
 %
-% * US vacancy level - Bureau of Labor Statistics (2022)
-% * US labor-force level - Bureau of Labor Statistics (2022)
+% * Monthly vacancy level – US Bureau of Labor Statistics (2024d)
+% * Monthly labor-force level – US Bureau of Labor Statistics (2024a)
 %
-% The data are stored in data.xlsx.
+% The data are stored in data.csv.
 %
 
-function v = getVacancyPandemic()
+function v = getVacancyPandemic(pathInput)
 
-% Read vacancy level
-vLevel = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'E1083:E1109');
+% Read monthly vacancy level
+vLevel = readmatrix([pathInput,'JTSJOL.csv'], 'Range', 'B230:B277');
 
-% Read labor-force level
-laborforce = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'D1083:D1109');
+% Read monthly labor-force level
+laborforce = readmatrix([pathInput,'CLF16OV.csv'], 'Range', 'B866:B913');
 
-% Compute vacancy rate
+% Compute monthly vacancy rate
 v = vLevel ./ laborforce;
+
+% Take quarterly average of monthly series
+v = monthly2quarterly(v);

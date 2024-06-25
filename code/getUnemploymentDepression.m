@@ -1,28 +1,31 @@
 %% getUnemploymentDepression
 % 
-% Return quarterly unemployment rate in the United States, 1930--1950
+% Return quarterly unemployment rate in the United States, 1930–1950
 %
 %% Syntax
 %
-%   u = getUnemploymentDepression()
+%   u = getUnemploymentDepression(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * u - 84-by-1 column vector
+% * pathInput – string 
+% * u – 84-by-1 column vector
 %
 %% Description
 %
-% This function reads the US unemployment rate, 1930--1950, and returns the quarterly average of this monthly series. 
+% This function reads the monthly unemployment rate in the United States, 1930–1950, and returns the quarterly average of the series. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The unemployment rate is produced by Petrosky-Nadeau & Zhang (2020) and stored in data.xlsx.
+% The monthly unemployment rate is produced by Petrosky-Nadeau, Zhang (2021).
 %
 
-function u = getUnemploymentDepression()
+function u = getUnemploymentDepression(pathInput)
 
 % Read monthly unemployment rate
-uMonthly = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range',' G3:G254')./100;
+uMonthly = readmatrix([pathInput,'HistoricalSeries_JME_2020January.csv'], 'Range', 'B486:B737')./100;
 
 % Take quarterly average of monthly series
-u = monthlyToQuarterly(uMonthly);
+u = monthly2quarterly(uMonthly);

@@ -1,33 +1,36 @@
 %% getUnemployment
 % 
-% Return quarterly unemployment rate in the United States, 1930Q1--2022Q1
+% Return quarterly unemployment rate in the United States, 1930–2023
 %
 %% Syntax
 %
-%   u = getUnemployment()
+%   u = getUnemployment(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * u - 369-by-1 column vector
+% * pathInput – string 
+% * u – 376-by-1 column vector
 %
 %% Description
 %
-% This function returns the quarterly unemployment rate in the United States, 1930Q1--2022Q1. 
+% This function returns the quarterly unemployment rate in the United States, 1930–2023. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 
-function u = getUnemployment()
+function u = getUnemployment(pathInput)
 
-%% --- Input quarterly unemployment rate for three subperiods ---
+%% Get quarterly unemployment rate for three subperiods
 
-% 1930Q1--1950Q4
-uDepression = getUnemploymentDepression();
+% 1930–1950
+uDepression = getUnemploymentDepression(pathInput);
 
-% 1951Q1--2019Q4
-uPostwar = getUnemploymentPostwar();
+% 1951–2019
+uPostwar = getUnemploymentPostwar(pathInput);
 
-% 2020Q1--2022Q1
-uPandemic = monthlyToQuarterly(getUnemploymentPandemic());
+% 2020–2023
+uPandemic = getUnemploymentPandemic(pathInput);
 
-%% --- Splice three series into a long series ---
+%% Splice three series into a long series
 
 u = [uDepression; uPostwar; uPandemic];

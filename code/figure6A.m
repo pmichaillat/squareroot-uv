@@ -4,78 +4,70 @@
 %
 %% Description
 %
-% This script produces figure 6A. The figure displays the gap between the monthly unemployment & vacancy rates in the United States, 2020M1--2022M3.
+% This script produces figure 6A. The figure displays the quarterly unemployment rate, vacancy rate, and FERU in the United States, 1930–1950.
 %
 %% Output
 %
 % * The figure is saved as figure6A.pdf.
-% * The underlying data are saved in figure6A.xlsx.
+% * The figure data are saved in figure6A.csv.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure6A.pdf'];
+fileData = [pathOutput, 'figure6A.csv'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePandemic();
+timeline = makeTimeline(1930, 1950);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPandemic();
+[startRecession, endRecession] = getRecessionDepression(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPandemic();
+u = getUnemploymentDepression(pathInput);
 
 % Get vacancy rate
-v = getVacancyPandemic();
+v = getVacancyDepression(pathInput);
 
-%% --- Format figure & plot ---
+%% Compute FERU
 
-formatStandardPlot
+uStar = sqrt(u .* v);
 
-%% --- Produce figure ---
+%% Produce figure
 
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xDepression{:})
+
+% Format y-axis
+ax.YLim = [0, 0.3];
+ax.YTick =  [0:0.06:0.3];
+ax.YTickLabel = [' 0%'; ' 6%'; '12%'; '18%'; '24%'; '30%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
-% Paint gap between unemployment & vacancy rates
-a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = orange;
+% Plot unemployment rate, vacancy rate, and FERU
+plot(timeline, u, linePurpleThin{:})
+plot(timeline, v, lineOrangeThin{:})
+plot(timeline, uStar, linePink{:})
 
-% Plot unemployment & vacancy rates
-plot(timeline, u, purpleSetting{:})
-plot(timeline, v, orangeSetting{:})
+% Save figure
+print('-dpdf', fileFigure)
 
-% Populate axes
-set(gca, xSettingPandemic{:})
-set(gca, 'yLim', [0,0.15], 'yTick', [0:0.03:0.15], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%';'15%'])
-ylabel('Share of labor force')
-
-% Print figure
-print('-dpdf', 'figure6A.pdf')
-
-%% --- Save results ---
-
-file = 'figure6A.xlsx';
-sheet = 'Figure 6A';
-years = floor(timeline);
-months = 1+(timeline-years).*12;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Month', 'Unemployment rate', 'Vacancy rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, months, u, v];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, u, v, uStar];
+writematrix(data, fileData, 'WriteMode', 'append')

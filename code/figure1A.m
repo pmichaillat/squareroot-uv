@@ -4,70 +4,93 @@
 %
 %% Description
 %
-% This script produces figure 1A. The figure displays the quarterly unemployment and vacancy rates in the United States, 1951--2019.
+% This script produces figure 1A and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1951–2019.
 %
 %% Output
 %
 % * The figure is saved as figure1A.pdf.
-% * The underlying data are saved in figure1A.xlsx.
+% * The figure data are saved in figure1A.csv.
+% * The numerical results are saved in figure1A.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure1A.pdf'];
+fileData = [pathOutput, 'figure1A.csv'];
+fileResults = [pathOutput, 'figure1A.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePostwar();
+timeline = makeTimeline(1951, 2019);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPostwar();
+[startRecession, endRecession] = getRecessionPostwar(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPostwar();
+u = getUnemploymentPostwar(pathInput);
 
 % Get vacancy rate
-v = getVacancyPostwar();
+v = getVacancyPostwar(pathInput);
 
-%% --- Format figure & plot ---
+%% Produce figure
 
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xPostwar{:})
+
+% Format y-axis
+ax.YLim = [0, 0.12];
+ax.YTick =  [0:0.03:0.12];
+ax.YTickLabel = [' 0%'; ' 3%'; ' 6%'; ' 9%'; '12%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
-% Plot unemployment & vacancy rates
-plot(timeline, u, purpleSetting{:})
-plot(timeline, v, orangeSetting{:})
+% Plot unemployment and vacancy rates
+plot(timeline, u, linePurple{:})
+plot(timeline, v, lineOrange{:})
 
-% Populate axes
-set(gca, xSettingPostwar{:})
-set(gca, 'yLim', [0,0.12], 'yTick', [0:0.03:0.12], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%'])
-ylabel('Share of labor force')
+% Save figure
+print('-dpdf', fileFigure)
 
-% Print figure
-print('-dpdf', 'figure1A.pdf')
-
-%% --- Save results ---
-
-file = 'figure1A.xlsx';
-sheet = 'Figure 1A';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Vacancy rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year', 'Unemployment rate', 'Vacancy rate'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
-% Write results
-result = [years, quarters, u, v];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+% Write data
+data = [timeline, u, v];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+uMean = mean(u);
+uMax = max(u);
+uMin = min(u);
+vMean = mean(v);
+vMax = max(v);
+vMin = min(v);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average unemployment rate: %4.3f \n', uMean)
+fprintf('* Maximum unemployment rate: %4.3f \n', uMax)
+fprintf('* Minimum unemployment rate: %4.3f \n', uMin)
+fprintf('* Average vacancy rate: %4.3f \n', vMean)
+fprintf('* Maximum vacancy rate: %4.3f \n', vMax)
+fprintf('* Minimum vacancy rate: %4.3f \n', vMin)
+fprintf('\n')
+diary off

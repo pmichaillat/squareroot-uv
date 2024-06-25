@@ -1,28 +1,31 @@
 %% getUnemploymentPostwar
 % 
-% Return quarterly unemployment rate in the United States, 1951--2019
+% Return quarterly unemployment rate in the United States, 1951–2019
 %
 %% Syntax
 %
-%   u = getUnemploymentPostwar()
+%   u = getUnemploymentPostwar(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * u - 276-by-1 column vector
+% * pathInput – string 
+% * u – 276-by-1 column vector
 %
 %% Description
 %
-% This function reads the US unemployment rate, 1951--2019, and returns the quarterly average of this monthly series. 
+% This function reads the monthly unemployment rate in the United States, 1951–2019, and returns the quarterly average of the series. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The unemployment rate is produced by the Bureau of Labor Statistics (2022) and stored in data.xlsx.
+% The monthly unemployment rate is produced by the US Bureau of Labor Statistics (2024i).
 %
 
-function u = getUnemploymentPostwar()
+function u = getUnemploymentPostwar(pathInput)
 
 % Read monthly unemployment rate
-uMonthly = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range',' C255:C1082')./100;
+uMonthly = readmatrix([pathInput,'UNRATE.csv'], 'Range', 'B38:B865')./100;
 
 % Take quarterly average of monthly series
-u = monthlyToQuarterly(uMonthly);
+u = monthly2quarterly(uMonthly);

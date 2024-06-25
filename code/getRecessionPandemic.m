@@ -1,42 +1,48 @@
 %% getRecessionPandemic
 % 
-% Return dates of recessions in the United States between 2020M1 and 2022M3
+% Return recession dates in the United States, 2020–2023
 %
 %% Syntax
 %
-%   [startRecession, endRecession, nRecession] = getRecessionPandemic()
+%   [startRecession, endRecession] = getRecessionPandemic(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * nRecession - scalar
-% * startRecession - nRecession-by-1 column vector
-% * endRecession - nRecession-by-1 column vector
+% * pathInput – string 
+% * startRecession – 1-by-1 column vector
+% * endRecession – 1-by-1 column vector
 %
 %% Description
 %
-% This function reads the start and end dates of US recessions, 2020M1--2022M3, and expresses them in year.month format:
-% * 2020.00 is 2020M1
-% * 2020.08 is 2020M2
-% * 2020.17 is 2020M3
-% * 2020.25 is 2020M4
+% This function reads the start and end dates of US recessions, 2020–2023, and expresses them in year.quarter format:
+%
+% * 2020.0 is 2020Q1
+% * 2020.25 is 2020Q2
+% * 2020.5 is 2020Q3
+% * 2020.75 is 2020Q4
 %
 % The function then returns all the dates:
+%
 % * The start dates are stored in startRecession.
 % * The end dates are stored in endRecession.
-% * The number of recessions is stored in nRecession.
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The recessions dates are produced by the National Bureau of Economic Research and stored in data.xlsx.
+% The recessions dates are produced by the National Bureau of Economic Research (2023).
 %
 
-function [startRecession, endRecession, nRecession] = getRecessionPandemic()
+function [startRecession, endRecession] = getRecessionPandemic(pathInput)
 
 % Read month numbers for start and end of recessions
-startRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','C37:C37');
-endRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','D37:D37');
-nRecession  =  length(startRecession);
+startTable = readtable([pathInput,'20210719_cycle_dates_pasted.csv'], 'Range', 'A36:A36');
+endTable = readtable([pathInput,'20210719_cycle_dates_pasted.csv'], 'Range', 'B36:B36');
 
-% Translate month numbers (start in January 1800) to year numbers
-startRecession = 1800 + (startRecession - 1) ./ 12; 
-endRecession = 1800 + (endRecession - 1) ./ 12;
+% Transform table into datetime array 
+startArray = table2array(startTable);
+endArray = table2array(endTable);
+
+% Translate dates into numbers, rounded to the current quarter
+startRecession = year(startArray) + floor((month(startArray) - 1)./3) ./ 4; 
+endRecession = year(endArray) + floor((month(endArray) - 1)./3) ./ 4;

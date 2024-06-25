@@ -4,75 +4,101 @@
 %
 %% Description
 %
-% This script produces figure 7A. The figure displays the monthly unemployment rate, vacancy rate, and efficient unemployment rate in the United States, 2020M1--2022M3.
+% This script produces figure 7A and associated numerical results. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 2020–2023.
 %
 %% Output
 %
 % * The figure is saved as figure7A.pdf.
-% * The underlying data are saved in figure7A.xlsx.
+% * The figure data are saved in figure7A.csv.
+% * The numerical results are saved in figure7A.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure7A.pdf'];
+fileData = [pathOutput, 'figure7A.csv'];
+fileResults = [pathOutput, 'figure7A.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePandemic();
+timeline = makeTimeline(2020, 2023);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPandemic();
+[startRecession, endRecession] = getRecessionPandemic(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPandemic();
+u = getUnemploymentPandemic(pathInput);
 
 % Get vacancy rate
-v = getVacancyPandemic();
+v = getVacancyPandemic(pathInput);
 
-%% --- Compute efficient unemployment rate ---
+%% Produce figure
 
-uStar = sqrt(u.*v);
-
-%% --- Format figure & plot ---
-
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xPandemic{:})
+
+% Format y-axis
+ax.YLim = [0, 0.15];
+ax.YTick =  [0:0.03:0.15];
+ax.YTickLabel = [' 0%'; ' 3%'; ' 6%'; ' 9%'; '12%'; '15%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
-% Plot unemployment rate, vacancy rate, & efficient unemployment rate
-plot(timeline, u, purpleSetting{:})
-plot(timeline, v, orangeSetting{:})
-plot(timeline, uStar, pinkSetting{:})
+% Paint gap between unemployment and vacancy rates
+a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
+a(1).FaceAlpha = 0;
+a(2).FaceAlpha = 0.2;
+a(3).FaceAlpha = 0.2;
+a(2).FaceColor = purple;
+a(3).FaceColor = orange;
 
-% Populate axes
-set(gca, xSettingPandemic{:})
-set(gca, 'yLim', [0,0.15], 'yTick', [0:0.03:0.15], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%';'15%'])
-ylabel('Share of labor force')
+% Plot unemployment and vacancy rates
+plot(timeline, u, linePurple{:})
+plot(timeline, v, lineOrange{:})
 
-% Print figure
-print('-dpdf', 'figure7A.pdf')
+% Save figure
+print('-dpdf', fileFigure)
 
-%% --- Save results ---
-
-file = 'figure7A.xlsx';
-sheet = 'Figure 7A';
-years = floor(timeline);
-months = 1+(timeline-years).*12;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Month', 'Unemployment rate', 'Vacancy rate', 'Efficient unemployment rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, months, u, v, uStar];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, u, v];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+uMean = mean(u);
+uMax = max(u);
+uMin = min(u);
+vMean = mean(v);
+vMax = max(v);
+vMin = min(v);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average unemployment rate: %4.3f \n', uMean)
+fprintf('* Maximum unemployment rate: %4.3f \n', uMax)
+fprintf('* Minimum unemployment rate: %4.3f \n', uMin)
+fprintf('* Average vacancy rate: %4.3f \n', vMean)
+fprintf('* Maximum vacancy rate: %4.3f \n', vMax)
+fprintf('* Minimum vacancy rate: %4.3f \n', vMin)
+fprintf('\n')
+diary off

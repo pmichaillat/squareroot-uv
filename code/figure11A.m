@@ -4,75 +4,90 @@
 %
 %% Description
 %
-% This script produces figure 11A. The figure displays the quarterly unemployment rate, vacancy rate, & efficient unemployment rate in the United States, 1930--1950.
+% This script produces figure 11A and associated numerical results. The figure displays the quarterly FERU in the United States, 1930–2023.
 %
 %% Output
 %
 % * The figure is saved as figure11A.pdf.
-% * The underlying data are saved in figure11A.xlsx.
+% * The figure data are saved in figure11A.csv.
+% * The numerical results are saved in figure11A.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure11A.pdf'];
+fileData = [pathOutput, 'figure11A.csv'];
+fileResults = [pathOutput, 'figure11A.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelineDepression();
+timeline = makeTimeline(1930, 2023);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionDepression();
+[startRecession, endRecession] = getRecession(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentDepression();
+u = getUnemployment(pathInput);
 
 % Get vacancy rate
-v = getVacancyDepression();
+v = getVacancy(pathInput);
 
-%% --- Compute efficient unemployment rate ---
+%% Compute FERU
 
-uStar = sqrt(u.*v);
+uStar = sqrt(u .* v);
 
-%% --- Format figure & plot ---
+%% Produce figure
 
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xTotal{:})
+
+% Format y-axis
+ax.YLim = [0, 0.08];
+ax.YTick =  [0:0.02:0.08];
+ax.YTickLabel = ['0%'; '2%'; '4%'; '6%'; '8%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
-% Plot unemployment rate, vacancy rate, & efficient unemployment rate
-plot(timeline, u, purpleSetting{:})
-plot(timeline, v, orangeSetting{:})
-plot(timeline, uStar, pinkSetting{:})
+% Plot FERU
+plot(timeline, uStar, linePink{:})
 
-% Populate axes
-set(gca, xSettingDepression{:})
-set(gca, 'yLim', [0,0.3], 'yTick', [0:0.05:0.3], 'yTickLabel', [' 0%';' 5%';'10%';'15%';'20%';'25%';'30%'])
-ylabel('Share of labor force')
+% Save figure
+print('-dpdf', fileFigure)
 
-% Print figure
-print('-dpdf', 'figure11A.pdf')
-
-%% --- Save results ---
-
-file = 'figure11A.xlsx';
-sheet = 'Figure 11A';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Vacancy rate', 'Efficient unemployment rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'FERU'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, u, v, uStar];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, uStar];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+uStarMean = mean(uStar);
+uStarMax = max(uStar);
+uStarMin = min(uStar);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average FERU: %4.3f \n', uStarMean)
+fprintf('* Maximum FERU: %4.3f \n', uStarMax)
+fprintf('* Minimum FERU: %4.3f \n', uStarMin)
+fprintf('\n')
+diary off

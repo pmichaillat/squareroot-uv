@@ -4,66 +4,61 @@
 %
 %% Description
 %
-% This script produces figure 1B. The figure displays on a log scale the quarterly unemployment and vacancy rates in the United States, 1951--2019.
+% This script produces figure 1B. The figure displays on a log scale the quarterly unemployment and vacancy rates in the United States, 1951–2019.
 %
 %% Output
 %
 % * The figure is saved as figure1B.pdf.
-% * The underlying data are saved in figure1B.xlsx.
+% * The figure data are saved in figure1B.csv.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure1B.pdf'];
+fileData = [pathOutput, 'figure1B.csv'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePostwar();
-
-% Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPostwar();
+timeline = makeTimeline(1951, 2019);
 
 % Get unemployment rate
-u = getUnemploymentPostwar();
+u = getUnemploymentPostwar(pathInput);
 
 % Get vacancy rate
-v = getVacancyPostwar();
+v = getVacancyPostwar(pathInput);
 
-%% --- Format figure & plot ---
+%% Produce figure
 
-formatStandardPlot
+iFigure = iFigure + 1;
+figure(iFigure)
 
-%% --- Produce figure ---
-
-figure(1)
-clf
-
-% Plot unemployment & vacancy rates
-semilogy(timeline, u, purpleSetting{:})
+% Plot unemployment and vacancy rates
+semilogy(timeline, u, linePurple{:})
 hold on
-semilogy(timeline, v, orangeSetting{:})
+semilogy(timeline, v, lineOrange{:})
 
-% Populate axes
-set(gca, xSettingPostwar{:})
-set(gca, 'yLim', [0.01,0.12], 'yTick', [0.01,0.03:0.03:0.12], 'yTickLabel', [' 1%';' 3%';' 6%';' 9%';'12%'])
-ylabel('Share of labor force')
+% Format x-axis
+ax = gca;
+set(ax, xPostwar{:})
+
+% Format y-axis
+ax.YLim = [0.015,0.12];
+ax.YTick =  [0.015,0.03,0.06,0.12];
+ax.YTickLabel = ['1.5%';'  3%';'  6%';' 12%'];
+ax.YLabel.String =  'Share of labor force';
+ax.YMinorTick = 'Off';
 box off
 
-% Print figure
-print('-dpdf', 'figure1B.pdf')
+% Save figure
+print('-dpdf', fileFigure)
 
-%% --- Save results ---
-
-file = 'figure1B.xlsx';
-sheet = 'Figure 1B';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Vacancy rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Log unemployment rate', 'Log vacancy rate'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, u, v];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, log(u), log(v)];
+writematrix(data, fileData, 'WriteMode', 'append')

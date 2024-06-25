@@ -4,82 +4,85 @@
 %
 %% Description
 %
-% This script produces figure 4B. The figure displays the quarterly unemployment gap in the United States, 1951--2019.
+% This script produces figure 4B and associated numerical results. The figure displays on a log scale the quarterly unemployment and vacancy rates in the United States, 1930–1950.
 %
 %% Output
 %
 % * The figure is saved as figure4B.pdf.
-% * The underlying data are saved in figure4B.xlsx.
+% * The figure data are saved in figure4B.csv.
+% * The numerical results are saved in figure4B.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure4B.pdf'];
+fileData = [pathOutput, 'figure4B.csv'];
+fileResults = [pathOutput, 'figure4B.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelinePostwar();
+timeline = makeTimeline(1930, 1950);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionPostwar();
+[startRecession, endRecession] = getRecessionDepression(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentPostwar();
+u = getUnemploymentDepression(pathInput);
 
 % Get vacancy rate
-v = getVacancyPostwar();
+v = getVacancyDepression(pathInput);
 
-%% --- Compute efficient unemployment rate ---
+%% Produce figure
 
-uStar = sqrt(u.*v);
+iFigure = iFigure + 1;
+figure(iFigure)
 
-%% --- Format figure & plot ---
-
-formatStandardPlot
-
-%% --- Produce figure ---
-
-figure(1)
-clf
+% Plot unemployment and vacancy rates
+semilogy(timeline, u, linePurple{:})
 hold on
+semilogy(timeline, v, lineOrange{:})
 
-% Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+% Format x-axis
+ax = gca;
+set(ax, xDepression{:})
 
-% Paint unemployment gap
-a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = pink;
+% Format y-axis
+ax.YLim = [0.007, 0.30];
+ax.YTick =  [0.007,0.015,0.03,0.06,0.12,0.30];
+ax.YTickLabel = ['0.7%'; '1.5%'; '  3%'; '  6%'; ' 12%'; ' 30%'];
+ax.YLabel.String =  'Share of labor force';
+ax.YMinorTick = 'Off';
+box off
 
-% Plot actual unemployment rate & efficient unemployment rate
-plot(timeline, u, purpleSetting{:})
-plot(timeline, uStar, pinkSetting{:})
+% Save figure
+print('-dpdf', fileFigure)
 
-% Populate axes
-set(gca, xSettingPostwar{:})
-set(gca, 'yLim', [0,0.12], 'yTick', [0:0.03:0.12], 'yTickLabel', [' 0%';' 3%';' 6%';' 9%';'12%'])
-ylabel('Share of labor force')
-
-% Print figure
-print('-dpdf', 'figure4B.pdf')
-
-%% --- Save results ---
-
-file = 'figure4B.xlsx';
-sheet = 'Figure 4B';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Efficient unemployment rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Log unemployment rate', 'Log vacancy rate'};
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, u, uStar];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, log(u), log(v)];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute elasticity of Beveridge curve
+y = log(v);
+X = [ones(size(u)), log(u)];
+b = regress(y,X);
+elasticity = b(2);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Elasticity of the 1930-1950 Beveridge curve: %1.2f \n', elasticity)
+fprintf('\n')
+diary off

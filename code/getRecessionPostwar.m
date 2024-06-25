@@ -1,42 +1,48 @@
 %% getRecessionPostwar
 % 
-% Return dates of recessions in the United States between 1951 and 2019
+% Return recession dates in the United States, 1951–2019
 %
 %% Syntax
 %
-%   [startRecession, endRecession, nRecession] = getRecessionPostwar()
+%   [startRecession, endRecession] = getRecessionPostwar(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * nRecession - scalar
-% * startRecession - nRecession-by-1 column vector
-% * endRecession - nRecession-by-1 column vector
+% * pathInput – string 
+% * startRecession – 10-by-1 column vector
+% * endRecession – 10-by-1 column vector
 %
 %% Description
 %
-% This function reads the start and end dates of US recessions, 1951--2019, and expresses them in year.quarter format:
+% This function reads the start and end dates of US recessions, 1951–2019, and expresses them in year.quarter format:
+%
 % * 1951.0 is 1951Q1.
 % * 1951.25 is 1951Q2.
 % * 1951.5 is 1951Q3.
 % * 1951.75 is 1951Q4.
 %
 % The function then returns all the dates:
+%
 % * The start dates are stored in startRecession.
 % * The end dates are stored in endRecession.
-% * The number of recessions is stored in nRecession.
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The recessions dates are produced by the National Bureau of Economic Research and stored in data.xlsx.
+% The recessions dates are produced by the National Bureau of Economic Research (2023).
 %
 
-function [startRecession, endRecession, nRecession] = getRecessionPostwar()
+function [startRecession, endRecession] = getRecessionPostwar(pathInput)
 
 % Read month numbers for start and end of recessions
-startRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','C27:C36');
-endRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','D27:D36');
-nRecession  =  length(startRecession);
+startTable = readtable([pathInput,'20210719_cycle_dates_pasted.csv'], 'Range', 'A26:A35');
+endTable = readtable([pathInput,'20210719_cycle_dates_pasted.csv'], 'Range', 'B26:B35');
 
-% Translate month numbers (start in January 1800) to years, rounded to the current quarter
-startRecession = 1800 + floor((startRecession - 1)./3) ./ 4; 
-endRecession = 1800 + floor((endRecession - 1)./3) ./ 4;
+% Transform table into datetime array 
+startArray = table2array(startTable);
+endArray = table2array(endTable);
+
+% Translate dates into numbers, rounded to the current quarter
+startRecession = year(startArray) + floor((month(startArray) - 1)./3) ./ 4; 
+endRecession = year(endArray) + floor((month(endArray) - 1)./3) ./ 4;

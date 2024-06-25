@@ -1,45 +1,48 @@
 %% getRecession
 % 
-% Return dates of recessions in the United States between 1930Q1 and 2022Q1
+% Return recession dates in the United States, 1930–2023
 %
 %% Syntax
 %
-%   [startRecession, endRecession, nRecession] = getRecession()
+%   [startRecession, endRecession] = getRecession(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * nRecession - scalar
-% * startRecession - nRecession-by-1 column vector
-% * endRecession - nRecession-by-1 column vector
+% * pathInput – string 
+% * startRecession – 15-by-1 column vector
+% * endRecession – 15-by-1 column vector
 %
 %% Description
 %
-% This function reads the start and end dates of US recessions, 1930Q1--2022Q1, and expresses them in year.quarter format:
-% * 1930.0 is 1930Q1.
-% * 1930.25 is 1930Q2.
-% * 1930.5 is 1930Q3.
-% * 1930.75 is 1930Q4.
+% This function returns the start and end dates of US recessions, 1930–2023.
 %
-% The function then returns all the dates:
 % * The start dates are stored in startRecession.
 % * The end dates are stored in endRecession.
-% * The number of recessions is stored in nRecession.
 %
-%% Data source
+% The dates are expressed in year.quarter format:
 %
-% The recessions dates are produced by the National Bureau of Economic Research and stored in data.xlsx.
+% * 1951.0 is 1951Q1.
+% * 1951.25 is 1951Q2.
+% * 1951.5 is 1951Q3.
+% * 1951.75 is 1951Q4.
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 
-function [startRecession, endRecession, nRecession] = getRecession()
+function [startRecession, endRecession] = getRecession(pathInput)
 
-% Read month numbers for start and end of recessions
-startRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','C23:C37');
-endRecession = readmatrix('data.xlsx','Sheet','Recession dates','Range','D23:D37');
-nRecession  =  length(startRecession);
+%% Get recession dates for three subperiods
 
-% Translate month numbers (start in January 1800) to years, rounded to the current quarter
-startRecession = 1800 + floor((startRecession - 1)./3) ./ 4; 
-endRecession = 1800 + floor((endRecession - 1)./3) ./ 4;
+% 1930–1950
+[startDepression, endDepression]  = getRecessionDepression(pathInput);
 
-% Start in the middle of a recession in 1930 
-startRecession(1) = max(1930, startRecession(1));
+% 1951–2019
+[startPostwar, endPostwar]  = getRecessionPostwar(pathInput);
+
+% 2020–2023
+[startPandemic, endPandemic]  = getRecessionPandemic(pathInput);
+
+%% Splice three series into a long series
+
+startRecession = [startDepression; startPostwar; startPandemic];
+endRecession = [endDepression; endPostwar; endPandemic];

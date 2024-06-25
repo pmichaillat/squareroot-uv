@@ -1,48 +1,50 @@
 %% getVacancyPostwar
 % 
-% Return quarterly vacancy rate in the United States, 1951--2019
+% Return quarterly vacancy rate in the United States, 1951–2019
 %
 %% Syntax
 %
-%   v = getVacancyPostwar()
+%   v = getVacancyPostwar(pathInput)
 %
-%% Output arguments
+%% Arguments
 %
-% * v - 276-by-1 column vector
+% * pathInput – string 
+% * v – 276-by-1 column vector
 %
 %% Description
 %
-% This function constructs the US vacancy rate, 1951--2019, by following the steps described in Michaillat & Saez (2021, p. 2):
-% # The function reads the US vacancy rate, 1951--2000.
-% # The function reads the US vacancy and labor-force levels, 2001--2019, and divides vacancy level by labor-force level to obtain the US vacancy rate, 2001--2019. 
-% # The function splices the two vacancy-rate series to produce the monthly vacancy rate in the United States, 1951--2019.
-% # The function returns the quarterly average of the monthly vacancy series. 
+% This function constructs the quarterly vacancy rate for the United States, 1951–2019:
+%
+% # The function reads the monthly vacancy rate, 1951–2000.
+% # The function reads the monthly vacancy and labor-force levels, 2001–2019, and divides vacancy level by labor-force level to obtain the monthly vacancy rate, 2001–2019. 
+% # The function splices the two monthly vacancy-rate series to produce the monthly vacancy rate for 1951–2019.
+% # The function returns the quarterly average of the monthly vacancy rate. 
+%
+% The argument pathInput gives the path to the folder with the raw data.
 %
 %% Data sources
 %
-% * US vacancy rate, 1951--2000 - Barnichon (2010)
-% * US vacancy level, 2001--2019 - Bureau of Labor Statistics (2022)
-% * US labor-force level, 2001--2019 - Bureau of Labor Statistics (2022)
-%
-% The data are stored in data.xlsx.
+% * Monthly vacancy rate, 1951–2000 – Barnichon (2010)
+% * Monthly vacancy level, 2001–2019 – US Bureau of Labor Statistics (2024d)
+% * Monthly labor-force level, 2001–2019 – US Bureau of Labor Statistics (2024a)
 %
 
-function v = getVacancyPostwar()
+function v = getVacancyPostwar(pathInput)
 
-% Read monthly vacancy rate for 1951--2000
-vRate1951 = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'F255:F854')./100;
+% Read monthly vacancy rate for 1951–2000
+vRate1951 = readmatrix([pathInput,'CompositeHWI.xlsx - Sheet1.csv'], 'Range', 'C9:C608')./100;
 
-% Read monthly vacancy level for 2001--2019
-vLevel2001 = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'E855:E1082');
+% Read monthly vacancy level for 2001–2019
+vLevel2001 = readmatrix([pathInput,'JTSJOL.csv'], 'Range', 'B2:B229');
 
-% Read monthly labor-force level for 2001--2019
-laborforce = readmatrix('data.xlsx', 'Sheet', 'Monthly data', 'Range', 'D855:D1082');
+% Read monthly labor-force level for 2001–2019
+laborforce = readmatrix([pathInput,'CLF16OV.csv'], 'Range', 'B638:B865');
 
-% Compute vacancy rate for 2001--2019
+% Compute monthly vacancy rate for 2001–2019
 vRate2001 = vLevel2001 ./ laborforce;
 
-% Splice monthly vacancy rates for 1951--2019
+% Splice monthly vacancy rates for 1951–2019
 vMonthly = [vRate1951; vRate2001];
 
 % Take quarterly average of monthly series
-v = monthlyToQuarterly(vMonthly);
+v = monthly2quarterly(vMonthly);

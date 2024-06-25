@@ -4,50 +4,61 @@
 %
 %% Description
 %
-% This script produces figure 11B. The figure displays the quarterly unemployment gap in the United States, 1930--1950.
+% This script produces figure 11B and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 1930–2023.
 %
 %% Output
 %
 % * The figure is saved as figure11B.pdf.
-% * The underlying data are saved in figure11B.xlsx.
+% * The figure data are saved in figure11B.csv.
+% * The numerical results are saved in figure11B.md.
 %
 
-close all
-clear
-clc
+%% Specify output files
 
-%% --- Get data ---
+fileFigure = [pathOutput, 'figure11B.pdf'];
+fileData = [pathOutput, 'figure11B.csv'];
+fileResults = [pathOutput, 'figure11B.md'];
+
+%% Get data
 
 % Get timeline
-timeline = getTimelineDepression();
+timeline = makeTimeline(1930, 2023);
 
 % Get recessions dates
-[startRecession, endRecession, nRecession] = getRecessionDepression();
+[startRecession, endRecession] = getRecession(pathInput);
 
 % Get unemployment rate
-u = getUnemploymentDepression();
+u = getUnemployment(pathInput);
 
 % Get vacancy rate
-v = getVacancyDepression();
+v = getVacancy(pathInput);
 
-%% --- Compute efficient unemployment rate ---
+%% Compute FERU
 
-uStar = sqrt(u.*v);
+uStar = sqrt(u .* v);
 
-%% --- Format figure & plot ---
+%% Compute unemployment gap
 
-formatStandardPlot
+gap = u - uStar;
 
-%% --- Produce figure ---
+%% Produce figure
 
-figure(1)
-clf
+iFigure = iFigure + 1;
+figure(iFigure)
 hold on
 
+% Format x-axis
+ax = gca;
+set(ax, xTotal{:})
+
+% Format y-axis
+ax.YLim = [0, 0.3];
+ax.YTick =  [0:0.06:0.3];
+ax.YTickLabel = [' 0%'; ' 6%'; '12%'; '18%'; '24%'; '30%'];
+ax.YLabel.String =  'Share of labor force';
+
 % Paint recession areas
-for iRecession = 1 : nRecession
-	area([startRecession(iRecession), endRecession(iRecession)], [2,2], areaSetting{:});
-end
+xregion(startRecession, endRecession, areaRecession{:});
 
 % Paint unemployment gap
 a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
@@ -55,31 +66,53 @@ a(1).FaceAlpha = 0;
 a(2).FaceAlpha = 0.2;
 a(3).FaceAlpha = 0.2;
 a(2).FaceColor = purple;
-a(3).FaceColor = pink;
+a(3).FaceColor = orange;
 
-% Plot actual unemployment rate & efficient unemployment rate
-plot(timeline, u, purpleSetting{:})
-plot(timeline, uStar, pinkSetting{:})
+% Plot unemployment rate and FERU
+plot(timeline, u, linePurpleThin{:})
+plot(timeline, uStar, linePink{:})
 
-% Populate axes
-set(gca, xSettingDepression{:})
-set(gca, 'yLim', [0,0.3], 'yTick', [0:0.05:0.3], 'yTickLabel', [' 0%';' 5%';'10%';'15%';'20%';'25%';'30%'])
-ylabel('Share of labor force')
+% Save figure
+print('-dpdf', fileFigure)
 
-% Print figure
-print('-dpdf', 'figure11B.pdf')
-
-%% --- Save results ---
-
-file = 'figure11B.xlsx';
-sheet = 'Figure 11B';
-years = floor(timeline);
-quarters = 1+(timeline-years).*4;
+%% Save figure data
 
 % Write header
-header = {'Year', 'Quarter', 'Unemployment rate', 'Efficient unemployment rate'};
-writecell(header, file, 'Sheet', sheet, 'WriteMode', 'replacefile')
+header = {'Year',  'Unemployment rate', 'FERU', 'Unemployment gap' };
+writecell(header, fileData, 'WriteMode', 'overwrite')
 
 % Write results
-result = [years, quarters, u, uStar];
-writematrix(result, file, 'Sheet', sheet, 'WriteMode', 'append')
+data = [timeline, u, uStar, gap];
+writematrix(data, fileData, 'WriteMode', 'append')
+
+%% Produce numerical results
+
+% Compute results
+uMean = mean(u);
+uMax = max(u);
+uMin = min(u);
+uStarMean = mean(uStar);
+uStarMax = max(uStar);
+uStarMin = min(uStar);
+gapMean = mean(gap);
+gapMax = max(gap);
+gapMin = min(gap);
+
+% Clear result file
+fid = fopen(fileResults, 'w');
+fclose(fid);
+
+% Display and save results
+diary(fileResults)
+fprintf('\n')
+fprintf('* Average unemployment rate: %4.3f \n', uMean)
+fprintf('* Maximum unemployment rate: %4.3f \n', uMax)
+fprintf('* Minimum unemployment rate: %4.3f \n', uMin)
+fprintf('* Average FERU: %4.3f \n', uStarMean)
+fprintf('* Maximum FERU: %4.3f \n', uStarMax)
+fprintf('* Minimum FERU: %4.3f \n', uStarMin)
+fprintf('* Average unemployment gap: %4.3f \n', gapMean)
+fprintf('* Maximum unemployment gap: %4.3f \n', gapMax)
+fprintf('* Minimum unemployment gap: %4.3f \n', gapMin)
+fprintf('\n')
+diary off
