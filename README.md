@@ -1,6 +1,6 @@
 # u* = √uv : Code and Data
 
-This repository contains the code and data accompanying the paper "u* = √uv", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and posted on [arXiv](https://arxiv.org/abs/2206.13012v3) in June 2024.
+This repository contains the code and data accompanying the paper "u* = √uv", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and posted on [arXiv](https://arxiv.org/abs/2206.13012) in June 2024.
 
 ## Paper webpage
 
@@ -89,7 +89,7 @@ The main script produces the individual figures using a collection of production
 
 Each script produces a figure in a figure window, saves a copy of the figure in PDF format, and saves the data used to generate each figure in CSV files. Each script also produces the numerical results associated with the figure. The results are displayed in the command window and saved in a Markdown file.
 
-### Helper scripts and functions
+### Helper functions
 
 The production scripts rely on a collection of helper functions:
  
