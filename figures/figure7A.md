@@ -1,8 +1,5 @@
 
-* Average unemployment rate: 0.052 
-* Maximum unemployment rate: 0.130 
-* Minimum unemployment rate: 0.035 
-* Average vacancy rate: 0.056 
-* Maximum vacancy rate: 0.072 
-* Minimum vacancy rate: 0.034 
+* Average FERU: 0.035 
+* Maximum FERU: 0.046 in 1930.75 
+* Minimum FERU: 0.025 in 1930.00 
 

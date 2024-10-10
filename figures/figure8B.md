@@ -1,11 +1,6 @@
 
-* Average unemployment rate: 0.052 
-* Maximum unemployment rate: 0.130 
-* Minimum unemployment rate: 0.035 
-* Average FERU: 0.051 
-* Maximum FERU: 0.067 
-* Minimum FERU: 0.040 
-* Average unemployment gap: 0.000 
-* Maximum unemployment gap: 0.063 
-* Minimum unemployment gap: -0.015 
+* Average labor-market tightness: 1.31 
+* Maximum labor-market tightness: 1.98 in 2022.25 
+* Minimum labor-market tightness: 0.26 in 2020.25 
+* Labor-market tightness in 2024Q2: 1.22 
 

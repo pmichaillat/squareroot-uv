@@ -1,5 +1,3 @@
 
-* Average labor-market tightness: 0.85 
-* Maximum labor-market tightness: 6.78 
-* Minimum labor-market tightness: 0.03 
+* Elasticity of the 1930-1950 Beveridge curve: -0.79 
 

@@ -1,11 +1,10 @@
 
-* Average unemployment rate: 0.052 
-* Maximum unemployment rate: 0.130 
-* Minimum unemployment rate: 0.035 
-* Average vacancy rate: 0.056 
-* Maximum vacancy rate: 0.072 
-* Minimum vacancy rate: 0.034 
-* Average FERU: 0.051 
-* Maximum FERU: 0.067 
-* Minimum FERU: 0.040 
+* Average unemployment rate: 0.050 
+* Maximum unemployment rate: 0.130 in 2020.25 
+* Minimum unemployment rate: 0.035 in 2023.00 
+* Unemployment rate in 2024Q2: 0.040 
+* Average vacancy rate: 0.055 
+* Maximum vacancy rate: 0.072 in 2022.25 
+* Minimum vacancy rate: 0.034 in 2020.25 
+* Vacancy rate in 2024Q2: 0.049 
 

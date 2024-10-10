@@ -1,6 +1,6 @@
-# u* = √uv : Code and Data
+# u* = √uv : The Full-Employment Rate of Unemployment in the United States – Code and Data
 
-This repository contains the code and data accompanying the paper "u* = √uv", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and posted on [arXiv](https://arxiv.org/abs/2206.13012) in June 2024.
+This repository contains the code and data accompanying the paper "u* = √uv: The Full-Employment Rate of Unemployment in the United States", written by [Pascal Michaillat](https://pascalmichaillat.org) and [Emmanuel Saez](https://eml.berkeley.edu/~saez/), and to be published in the Fall 2024 issue of [Brookings Papers on Economic Activity](https://www.brookings.edu/events/bpea-fall-2024-conference/).
 
 ## Paper webpage
 
@@ -50,12 +50,9 @@ The main script, `main.m`, orchestrates the production of the results in the pap
 + The script produces the 25 figures presented in the paper. The script generates each figure in a figure window and saves the figures as PDF files. The script saves the data used to generate each figure in CSV files.
 + The script also produces the numerical results associated with each figure. The results are displayed in the command window and saved in Markdown files.
 
-### Setup scripts
+### Formatting script
 
-Before the computations begin, the main script calls two setup scripts:
-
-+ `setup.m` – Close figure windows, clear workspace and command window, set paths to folders with raw data and figures
-+ `formatFigure` – Format default figure, and predefine line and axis styles
+Before the computations begin, the main script calls a formatting script, `formatFigure.m`, to preformat figures and predefine plot properties. The formatting is designed to provide a clear visual display of the results.
 
 ### Production scripts
 
@@ -113,7 +110,6 @@ The production scripts rely on a collection of helper functions:
 + `getVacancyJolts.m` – Return US vacancy rate, 2001–2023
 + `getVacancyPandemic.m` – Return US vacancy rate, 2020–2023
 + `getVacancyPostwar.m` – Return US vacancy rate, 1951–2019
-+ `makeTimeline.m` – Create quarterly timeline
 + `monthly2quarterly.m` – Convert monthly data to quarterly data
 
 ## Figures
@@ -146,9 +142,25 @@ The 25 figures produced by the code are saved as 25 PDF files. The data used to 
 + `figure13.pdf`, `figure13.csv`, `figure13.md` – Figure 13
 + `figure14.pdf`, `figure14.csv`, `figure14.md` – Figure 14
 
+## Usage
+
+To generate all figures and numerical results from the paper, run the following command in MATLAB:
+
+```matlab
+run('main.m')
+```
+
+Before running the script, ensure you save a copy of the `figures` folder, as all files in that folder will be overwritten by the code.
+
+Alternatively, you can save the new files produced by the code in a new folder. To do this, create a new folder `newfigures`, and then in `main.m`, adjust the output folder with the following line:
+
+```matlab
+outputFolder = fullfile('..', 'newfigures');
+```
+
 ## Software
 
-The results were obtained using MATLAB R2024a on an Apple Silicon Mac running macOS Sonoma 14.5.
+The results were obtained using MATLAB R2024a on an Apple Silicon Mac running macOS Sequoia 15.0. In MATLAB, the Statistics and Machine Learning Toolbox is required to run  some of the scripts.
 
 ## License
 
