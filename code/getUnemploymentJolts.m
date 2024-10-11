@@ -1,31 +1,31 @@
 %% getUnemploymentJolts
 % 
-% Return quarterly unemployment rate in the United States, 2001–2022
+% Return quarterly unemployment rate in the United States, 2001Q1–2024Q2
 %
 %% Syntax
 %
-%   u = getUnemploymentJolts(pathInput)
+%   u = getUnemploymentJolts(inputFolder)
 %
 %% Arguments
 %
-% * pathInput – string 
-% * u – 92-by-1 column vector
+% * inputFolder – String 
+% * u – 94-by-1 column vector
 %
 %% Description
 %
-% This function reads the monthly unemployment rate in the United States, 2001–2022, and returns the quarterly average of the series. 
+% This function reads the monthly unemployment rate in the United States, 2001Q1–2024Q2, and returns the quarterly average of the series. 
 %
-% The argument pathInput gives the path to the folder with the raw data.
+% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %
-% The monthly unemployment rate is produced by the US Bureau of Labor Statistics (2024i).
+% * US Bureau of Labor Statistics (2024k)
 %
 
-function u = getUnemploymentJolts(pathInput)
+function u = getUnemploymentJolts(inputFolder)
 
 % Read monthly unemployment rate
-u = readmatrix([pathInput,'UNRATE.csv'], 'Range', 'B638:B913')./100;
+uMonthly = readmatrix(fullfile(inputFolder,'UNRATE.csv'), 'Range', 'B638:B919')./100;
 
 % Take quarterly average of monthly series
-u = monthly2quarterly(u);
+u = monthly2quarterly(uMonthly);

@@ -4,85 +4,115 @@
 %
 %% Description
 %
-% This script produces figure 4B and associated numerical results. The figure displays on a log scale the quarterly unemployment and vacancy rates in the United States, 1930–1950.
+% This script produces figure 4B and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 1951Q1–2019Q4.
+%
+%% Requirements
+%
+% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
+% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
+% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
 %
 %% Output
 %
-% * The figure is saved as figure4B.pdf.
-% * The figure data are saved in figure4B.csv.
-% * The numerical results are saved in figure4B.md.
+% * figure4B.pdf – PDF file with figure 4B
+% * figure4B.csv – CSV file with data underlying figure 4B
+% * figure4B.md – Markdown file with numerical results associated with figure 4B.
 %
 
-%% Specify output files
+%% Specify figure name and output files
 
-fileFigure = [pathOutput, 'figure4B.pdf'];
-fileData = [pathOutput, 'figure4B.csv'];
-fileResults = [pathOutput, 'figure4B.md'];
+% Define figure number
+number = '4B';
+
+% Construct figure name
+figureName = ['Figure ', number];
+
+% Construct file names
+figureFile = fullfile(outputFolder, ['figure', number, '.pdf']);
+dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
+resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Get timeline
-timeline = makeTimeline(1930, 1950);
+% Produce quarterly timeline
+timeline = [1951 : 0.25 : 2019.75]';
 
 % Get recessions dates
-[startRecession, endRecession] = getRecessionDepression(pathInput);
+[startRecession, endRecession] = getRecessionPostwar(inputFolder);
 
 % Get unemployment rate
-u = getUnemploymentDepression(pathInput);
+u = getUnemploymentPostwar(inputFolder);
 
 % Get vacancy rate
-v = getVacancyDepression(pathInput);
+v = getVacancyPostwar(inputFolder);
+
+%% Compute FERU
+
+uStar = sqrt(u .* v);
+
+%% Compute unemployment gap
+
+gap = u - uStar;
 
 %% Produce figure
 
-iFigure = iFigure + 1;
-figure(iFigure)
-
-% Plot unemployment and vacancy rates
-semilogy(timeline, u, linePurple{:})
+figure('NumberTitle', 'off', 'Name', figureName)
 hold on
-semilogy(timeline, v, lineOrange{:})
 
 % Format x-axis
 ax = gca;
-set(ax, xDepression{:})
+set(ax, xPostwar{:})
 
 % Format y-axis
-ax.YLim = [0.007, 0.30];
-ax.YTick =  [0.007,0.015,0.03,0.06,0.12,0.30];
-ax.YTickLabel = ['0.7%'; '1.5%'; '  3%'; '  6%'; ' 12%'; ' 30%'];
+ax.YLim = [0, 0.12];
+ax.YTick =  [0:0.02:0.12];
+ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'];
 ax.YLabel.String =  'Share of labor force';
-ax.YMinorTick = 'Off';
-box off
+
+% Paint recession areas
+xregion(startRecession, endRecession, grayArea{:});
+
+% Paint unemployment gap
+a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
+a(1).FaceAlpha = 0;
+a(2).FaceAlpha = 0.2;
+a(3).FaceAlpha = 0.2;
+a(2).FaceColor = purple;
+a(3).FaceColor = orange;
+
+% Plot unemployment rate and FERU
+plot(timeline, u, purpleThinLine{:})
+plot(timeline, uStar, pinkLine{:})
 
 % Save figure
-print('-dpdf', fileFigure)
+print('-dpdf', figureFile)
 
 %% Save figure data
 
 % Write header
-header = {'Year',  'Log unemployment rate', 'Log vacancy rate'};
-writecell(header, fileData, 'WriteMode', 'overwrite')
+header = {'Year',  'Unemployment rate', 'FERU', 'Unemployment gap'};
+writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, log(u), log(v)];
-writematrix(data, fileData, 'WriteMode', 'append')
+data = [timeline, u, uStar, gap];
+writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
-% Compute elasticity of Beveridge curve
-y = log(v);
-X = [ones(size(u)), log(u)];
-b = regress(y,X);
-elasticity = b(2);
+% Compute results
+gapMean = mean(gap);
+[gapMax, iMax] = max(gap);
+[gapMin, iMin] = min(gap);
 
 % Clear result file
-fid = fopen(fileResults, 'w');
+fid = fopen(resultFile, 'w');
 fclose(fid);
 
 % Display and save results
-diary(fileResults)
+diary(resultFile)
 fprintf('\n')
-fprintf('* Elasticity of the 1930-1950 Beveridge curve: %1.2f \n', elasticity)
+fprintf('* Average unemployment gap: %4.3f \n', gapMean)
+fprintf('* Maximum unemployment gap: %4.3f in %4.2f \n', gapMax, timeline(iMax))
+fprintf('* Minimum unemployment gap: %4.3f in %4.2f \n', gapMin, timeline(iMin))
 fprintf('\n')
 diary off

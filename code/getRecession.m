@@ -1,20 +1,20 @@
 %% getRecession
 % 
-% Return recession dates in the United States, 1930–2023
+% Return recession dates in the United States, 1930Q1–2024Q2
 %
 %% Syntax
 %
-%   [startRecession, endRecession] = getRecession(pathInput)
+%   [startRecession, endRecession] = getRecession(inputFolder)
 %
 %% Arguments
 %
-% * pathInput – string 
+% * inputFolder – String 
 % * startRecession – 15-by-1 column vector
 % * endRecession – 15-by-1 column vector
 %
 %% Description
 %
-% This function returns the start and end dates of US recessions, 1930–2023.
+% This function returns the start dates and end dates of US recessions between 1930Q1 and 2024Q2.
 %
 % * The start dates are stored in startRecession.
 % * The end dates are stored in endRecession.
@@ -26,21 +26,21 @@
 % * 1951.5 is 1951Q3.
 % * 1951.75 is 1951Q4.
 %
-% The argument pathInput gives the path to the folder with the raw data.
+% The argument inputFolder gives the path to the folder with the raw data.
 %
 
-function [startRecession, endRecession] = getRecession(pathInput)
+function [startRecession, endRecession] = getRecession(inputFolder)
 
 %% Get recession dates for three subperiods
 
-% 1930–1950
-[startDepression, endDepression]  = getRecessionDepression(pathInput);
+% 1930Q1–1950Q4
+[startDepression, endDepression]  = getRecessionDepression(inputFolder);
 
-% 1951–2019
-[startPostwar, endPostwar]  = getRecessionPostwar(pathInput);
+% 1951Q1–2019Q4
+[startPostwar, endPostwar]  = getRecessionPostwar(inputFolder);
 
-% 2020–2023
-[startPandemic, endPandemic]  = getRecessionPandemic(pathInput);
+% 2020Q1–2024Q2
+[startPandemic, endPandemic]  = getRecessionPandemic(inputFolder);
 
 %% Splice three series into a long series
 

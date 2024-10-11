@@ -4,43 +4,51 @@
 %
 %% Description
 %
-% This script produces figure 5B and associated numerical results. The figure displays the quarterly labor-market tightness in the United States, 1930–1950.
+% This script produces figure 5B and associated numerical results. The figure displays on a log scale the quarterly unemployment and vacancy rates in the United States, 1930Q1–1950Q4.
+%
+%% Requirements
+%
+% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
+% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
+% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
 %
 %% Output
 %
-% * The figure is saved as figure5B.pdf.
-% * The figure data are saved in figure5B.csv.
-% * The numerical results are saved in figure5B.md.
+% * figure5B.pdf – PDF file with figure 5B
+% * figure5B.csv – CSV file with data underlying figure 5B
+% * figure5B.md – Markdown file with numerical results associated with figure 5B.
 %
 
-%% Specify output files
+%% Specify figure name and output files
 
-fileFigure = [pathOutput, 'figure5B.pdf'];
-fileData = [pathOutput, 'figure5B.csv'];
-fileResults = [pathOutput, 'figure5B.md'];
+% Define figure number
+number = '5B';
+
+% Construct figure name
+figureName = ['Figure ', number];
+
+% Construct file names
+figureFile = fullfile(outputFolder, ['figure', number, '.pdf']);
+dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
+resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Get timeline
-timeline = makeTimeline(1930, 1950);
+% Produce quarterly timeline
+timeline = [1930 : 0.25 : 1950.75]';
 
 % Get recessions dates
-[startRecession, endRecession] = getRecessionDepression(pathInput);
+[startRecession, endRecession] = getRecessionDepression(inputFolder);
 
 % Get unemployment rate
-u = getUnemploymentDepression(pathInput);
+u = getUnemploymentDepression(inputFolder);
 
 % Get vacancy rate
-v = getVacancyDepression(pathInput);
-
-%% Compute labor-market tightness
-
-tightness = v ./ u;
+v = getVacancyDepression(inputFolder);
 
 %% Produce figure
 
-iFigure = iFigure + 1;
-figure(iFigure)
+figure('NumberTitle', 'off', 'Name', figureName)
 hold on
 
 % Format x-axis
@@ -48,56 +56,47 @@ ax = gca;
 set(ax, xDepression{:})
 
 % Format y-axis
-ax.YLim = [0, 7];
-ax.YTick =  [0:1:7];
-ax.YLabel.String =  'Tightness';
+
+ax.YLim = log([0.005, 0.30]);
+ax.YTick =  log([0.005, 0.01, 0.02, 0.04, 0.1, 0.2, 0.3]);
+ax.YTickLabel = ['0.5%'; '  1%'; '  2%'; '  4%'; ' 10%'; ' 20%'; ' 30%'];
+ax.YLabel.String =  'Share of labor force (log scale)';
 
 % Paint recession areas
-xregion(startRecession, endRecession, areaRecession{:});
+xregion(startRecession, endRecession, grayArea{:});
 
-% Paint gap between tightness and full-employment line
-a = area(timeline, [ones(size(tightness)), max(tightness - 1,0), min(tightness - 1,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = orange;
-a(3).FaceColor = purple;
-
-% Plot labor-market tightness
-plot(timeline, tightness, linePurple{:})
-
-% Plot full-employment line
-yline(1, linePinkThin{:}, 'Alpha', 1)
+% Plot log unemployment and vacancy rates
+plot(timeline, log(u), purpleLine{:})
+plot(timeline, log(v), orangeDashLine{:})
 
 % Save figure
-print('-dpdf', fileFigure)
+print('-dpdf', figureFile)
 
 %% Save figure data
 
 % Write header
-header = {'Year', 'Tightness'};
-writecell(header, fileData, 'WriteMode', 'overwrite')
+header = {'Year',  'Log unemployment rate', 'Log vacancy rate'};
+writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, tightness];
-writematrix(data, fileData, 'WriteMode', 'append')
+data = [timeline, log(u), log(v)];
+writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
-% Compute results
-tightnessMean = mean(tightness);
-tightnessMax = max(tightness);
-tightnessMin = min(tightness);
+% Compute elasticity of Beveridge curve
+y = log(v);
+X = [ones(size(u)), log(u)];
+b = regress(y,X);
+elasticity = b(2);
 
 % Clear result file
-fid = fopen(fileResults, 'w');
+fid = fopen(resultFile, 'w');
 fclose(fid);
 
 % Display and save results
-diary(fileResults)
+diary(resultFile)
 fprintf('\n')
-fprintf('* Average labor-market tightness: %4.2f \n', tightnessMean)
-fprintf('* Maximum labor-market tightness: %4.2f \n', tightnessMax)
-fprintf('* Minimum labor-market tightness: %4.2f \n', tightnessMin)
+fprintf('* Elasticity of the 1930-1950 Beveridge curve: %1.2f \n', elasticity)
 fprintf('\n')
 diary off

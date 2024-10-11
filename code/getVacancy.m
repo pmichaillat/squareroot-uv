@@ -1,36 +1,36 @@
 %% getVacancy
 % 
-% Return quarterly vacancy rate in the United States, 1930–2023
+% Return quarterly vacancy rate in the United States, 1930Q1–2024Q2
 %
 %% Syntax
 %
-%   v = getVacancy(pathInput)
+%   v = getVacancy(inputFolder)
 %
 %% Arguments
 %
-% * pathInput – string 
-% * v – 376-by-1 column vector
+% * inputFolder – String 
+% * v – 378-by-1 column vector
 %
 %% Description
 %
-% This function returns the quarterly vacancy rate in the United States, 1930–2023. 
+% This function returns the quarterly vacancy rate in the United States, 1930Q1–2024Q2. 
 %
-% The argument pathInput gives the path to the folder with the raw data.
+% The argument inputFolder gives the path to the folder with the raw data.
 %
 
-function v = getVacancy(pathInput)
+function v = getVacancy(inputFolder)
 
 %% Get quarterly vacancy rate for three subperiods
 
-% 1930–1950
-vDepression = getVacancyDepression(pathInput);
+% 1930Q1–1950Q4
+vDepression = getVacancyDepression(inputFolder);
 
-% 1951–2019
-vPostwar = getVacancyPostwar(pathInput);
+% 1951Q1–2019Q4
+vPostwar = getVacancyPostwar(inputFolder);
 
-% 2020–2023
-vPandemic = getVacancyPandemic(pathInput);
+% 2020Q1–2024Q2
+vPandemic = getVacancyPandemic(inputFolder);
 
-%% Splice three series into a long series
+%% Splice the three series into one continuous series
 
 v = [vDepression; vPostwar; vPandemic];

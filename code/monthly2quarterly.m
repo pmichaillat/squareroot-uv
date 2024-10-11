@@ -10,13 +10,13 @@
 %
 % If the function is applied to a single series:
 %
-% * data is an N-by-1 column vector
-% * result is an (N/3)-by-1 column vector
+% * data – N-by-1 column vector
+% * result – (N/3)-by-1 column vector
 % 
 % If the function is applied to M series:
 %
-% * data is an N-by-M matrix
-% * result is an (N/3)-by-M matrix
+% * data – N-by-M matrix
+% * result – (N/3)-by-M matrix
 %
 %% Description
 %

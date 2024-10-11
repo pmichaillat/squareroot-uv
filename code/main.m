@@ -4,7 +4,7 @@
 %
 %% Description
 %
-% This is the main script for the paper. It constructs the 25 figures and  associated numerical results included in the paper.
+% This is the main script for the paper. It constructs the 29 figures and  associated numerical results included in the paper.
 %
 %% Output
 %
@@ -13,20 +13,34 @@
 % * The numerical results are saved as Markdown files.
 %
 
-%% Set up computations
+%% Clear MATLAB
 
-setup
+% Close figure windows
+close all
 
-%% Format default figure
+% Clear workspace
+clear
+
+% Clear command window
+clc
+
+%% Specify input and output folders
+
+% Specify folder with raw data
+inputFolder = fullfile('..', 'raw');
+
+% Specify folder with figures and numerical results
+outputFolder = fullfile('..', 'figures');
+
+%% Format default figure and predefine plot properties
 
 formatFigure
 
-%% Produce figures & related numerical results
+%% Produce and save figures and associated numerical results
 
 figure1A
 figure1B
-figure2A
-figure2B
+figure2
 figure3A
 figure3B
 figure4A
@@ -39,12 +53,12 @@ figure7A
 figure7B
 figure8A
 figure8B
-figure9
-figure10A
-figure10B
-figure11A
-figure11B
-figure12A
-figure12B
+figure9A
+figure9B
+figure10
+figure11
+figure12
 figure13
-figure14
+figure14A
+figure14B
+figure15

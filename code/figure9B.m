@@ -1,10 +1,10 @@
-%% figure8A.m
+%% figure9B.m
 % 
-% Produce figure 8A
+% Produce figure 9B
 %
 %% Description
 %
-% This script produces figure 8A and associated numerical results. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 2020Q1–2024Q2.
+% This script produces figure 9B and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 2020Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,15 +14,15 @@
 %
 %% Output
 %
-% * figure8A.pdf – PDF file with figure 8A
-% * figure8A.csv – CSV file with data underlying figure 8A
-% * figure8A.md – Markdown file with numerical results associated with figure 8A.
+% * figure9B.pdf – PDF file with figure 9B
+% * figure9B.csv – CSV file with data underlying figure 9B
+% * figure9B.md – Markdown file with numerical results associated with figure 9B.
 %
 
 %% Specify figure name and output files
 
 % Define figure number
-number = '8A';
+number = '9B';
 
 % Construct figure name
 figureName = ['Figure ', number];
@@ -46,6 +46,14 @@ u = getUnemploymentPandemic(inputFolder);
 % Get vacancy rate
 v = getVacancyPandemic(inputFolder);
 
+%% Compute FERU
+
+uStar = sqrt(u .* v);
+
+%% Compute unemployment gap
+
+gap = u - uStar;
+
 %% Produce figure
 
 figure('NumberTitle', 'off', 'Name', figureName)
@@ -64,17 +72,17 @@ ax.YLabel.String =  'Share of labor force';
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:});
 
-% Paint gap between unemployment and vacancy rates
-a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
+% Paint unemployment gap
+a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
 a(1).FaceAlpha = 0;
 a(2).FaceAlpha = 0.2;
 a(3).FaceAlpha = 0.2;
 a(2).FaceColor = purple;
 a(3).FaceColor = orange;
 
-% Plot unemployment and vacancy rates
-plot(timeline, u, purpleLine{:})
-plot(timeline, v, orangeDashLine{:})
+% Plot unemployment rate and FERU
+plot(timeline, u, purpleThinLine{:})
+plot(timeline, uStar, pinkLine{:})
 
 % Save figure
 print('-dpdf', figureFile)
@@ -82,22 +90,19 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+header = {'Year',  'Unemployment rate', 'FERU', 'Unemployment gap'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, u, v];
+data = [timeline, u, uStar, gap];
 writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
 % Compute results
-uMean = mean(u);
-[uMax, iMaxU] = max(u);
-[uMin, iMinU] = min(u);
-vMean = mean(v);
-[vMax, iMaxV] = max(v);
-[vMin, iMinV] = min(v);
+gapMean = mean(gap);
+[gapMax, iMax] = max(gap);
+[gapMin, iMin] = min(gap);
 
 % Clear result file
 fid = fopen(resultFile, 'w');
@@ -106,13 +111,9 @@ fclose(fid);
 % Display and save results
 diary(resultFile)
 fprintf('\n')
-fprintf('* Average unemployment rate: %4.3f \n', uMean)
-fprintf('* Maximum unemployment rate: %4.3f in %4.2f \n', uMax, timeline(iMaxU))
-fprintf('* Minimum unemployment rate: %4.3f in %4.2f \n', uMin, timeline(iMinU))
-fprintf('* Unemployment rate in 2024Q2: %4.3f \n', u(end))
-fprintf('* Average vacancy rate: %4.3f \n', vMean)
-fprintf('* Maximum vacancy rate: %4.3f in %4.2f \n', vMax, timeline(iMaxV))
-fprintf('* Minimum vacancy rate: %4.3f in %4.2f \n', vMin, timeline(iMinV))
-fprintf('* Vacancy rate in 2024Q2: %4.3f \n', v(end))
+fprintf('* Average unemployment gap: %4.3f \n', gapMean)
+fprintf('* Maximum unemployment gap: %4.3f in %4.2f \n', gapMax, timeline(iMax))
+fprintf('* Minimum unemployment gap: %4.3f in %4.2f \n', gapMin, timeline(iMin))
+fprintf('* Unemployment gap in 2024Q2: %4.3f \n', gap(end))
 fprintf('\n')
 diary off

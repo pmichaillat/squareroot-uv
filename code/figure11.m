@@ -1,10 +1,10 @@
-%% figure8A.m
+%% figure11.m
 % 
-% Produce figure 8A
+% Produce figure 11
 %
 %% Description
 %
-% This script produces figure 8A and associated numerical results. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 2020Q1–2024Q2.
+% This script produces figure 11 and associated numerical results. The figure displays on a log scale the quarterly unemployment rate, vacancy rate, and FERU in the United States, 1930Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,15 +14,15 @@
 %
 %% Output
 %
-% * figure8A.pdf – PDF file with figure 8A
-% * figure8A.csv – CSV file with data underlying figure 8A
-% * figure8A.md – Markdown file with numerical results associated with figure 8A.
+% * figure11.pdf – PDF file with figure 11
+% * figure11.csv – CSV file with data underlying figure 11
+% * figure11.md – Markdown file with numerical results associated with figure 11.
 %
 
 %% Specify figure name and output files
 
 % Define figure number
-number = '8A';
+number = '11';
 
 % Construct figure name
 figureName = ['Figure ', number];
@@ -35,16 +35,20 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 %% Get data
 
 % Produce quarterly timeline
-timeline = [2020 : 0.25 : 2024.25]';
+timeline = [1930 : 0.25 : 2024.25]';
 
 % Get recessions dates
-[startRecession, endRecession] = getRecessionPandemic(inputFolder);
+[startRecession, endRecession] = getRecession(inputFolder);
 
 % Get unemployment rate
-u = getUnemploymentPandemic(inputFolder);
+u = getUnemployment(inputFolder);
 
 % Get vacancy rate
-v = getVacancyPandemic(inputFolder);
+v = getVacancy(inputFolder);
+
+%% Compute FERU
+
+uStar = sqrt(u .* v);
 
 %% Produce figure
 
@@ -53,28 +57,32 @@ hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xPandemic{:})
+set(ax, xTotal{:})
 
 % Format y-axis
-ax.YLim = [0, 0.14];
-ax.YTick =  [0:0.02:0.14];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YLim = log([0.005, 0.3]);
+ax.YTick =  log([0.005, 0.01, 0.02, 0.04, 0.08, 0.15, 0.3]);
+ax.YTickLabel = ['0.5%'; '  1%'; '  2%'; '  4%'; '  8%'; ' 15%'; ' 30%'];
+ax.YLabel.String =  'Share of labor force (log scale)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:});
 
 % Paint gap between unemployment and vacancy rates
-a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
+a = area(timeline, [log(uStar), max(log(u) - log(uStar),0), min(log(u) - log(uStar),0)], 'LineStyle', 'none');
 a(1).FaceAlpha = 0;
 a(2).FaceAlpha = 0.2;
 a(3).FaceAlpha = 0.2;
 a(2).FaceColor = purple;
 a(3).FaceColor = orange;
 
-% Plot unemployment and vacancy rates
-plot(timeline, u, purpleLine{:})
-plot(timeline, v, orangeDashLine{:})
+% Plot unemployment rate, vacancy rate, and FERU
+plot(timeline, log(u), purpleThinLine{:})
+plot(timeline, log(v), orangeDashThinLine{:})
+plot(timeline, log(uStar), pinkLine{:})
+
+% Hide box on top of figure
+plot(timeline,log(0.3).*ones(size(timeline)),'Color','#E6E6E6','LineWidth',0.82)
 
 % Save figure
 print('-dpdf', figureFile)
@@ -82,11 +90,11 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, u, v];
+data = [timeline, u, v, uStar];
 writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
@@ -98,6 +106,9 @@ uMean = mean(u);
 vMean = mean(v);
 [vMax, iMaxV] = max(v);
 [vMin, iMinV] = min(v);
+uStarMean = mean(uStar);
+[uStarMax, iMax] = max(uStar);
+[uStarMin, iMin] = min(uStar);
 
 % Clear result file
 fid = fopen(resultFile, 'w');
@@ -109,10 +120,11 @@ fprintf('\n')
 fprintf('* Average unemployment rate: %4.3f \n', uMean)
 fprintf('* Maximum unemployment rate: %4.3f in %4.2f \n', uMax, timeline(iMaxU))
 fprintf('* Minimum unemployment rate: %4.3f in %4.2f \n', uMin, timeline(iMinU))
-fprintf('* Unemployment rate in 2024Q2: %4.3f \n', u(end))
 fprintf('* Average vacancy rate: %4.3f \n', vMean)
 fprintf('* Maximum vacancy rate: %4.3f in %4.2f \n', vMax, timeline(iMaxV))
 fprintf('* Minimum vacancy rate: %4.3f in %4.2f \n', vMin, timeline(iMinV))
-fprintf('* Vacancy rate in 2024Q2: %4.3f \n', v(end))
+fprintf('* Average FERU: %4.3f \n', uStarMean)
+fprintf('* Maximum FERU: %4.3f in %4.2f \n', uStarMax, timeline(iMax))
+fprintf('* Minimum FERU: %4.3f in %4.2f \n', uStarMin, timeline(iMin))
 fprintf('\n')
 diary off

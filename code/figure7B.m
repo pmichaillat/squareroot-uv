@@ -4,100 +4,115 @@
 %
 %% Description
 %
-% This script produces figure 7B and associated numerical results. The figure displays the quarterly labor-market tightness in the United States, 2020–2023.
+% This script produces figure 7B and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 1930Q1–1950Q4.
+%
+%% Requirements
+%
+% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
+% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
+% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
 %
 %% Output
 %
-% * The figure is saved as figure7B.pdf.
-% * The figure data are saved in figure7B.csv.
-% * The numerical results are saved in figure7B.md.
+% * figure7B.pdf – PDF file with figure 7B
+% * figure7B.csv – CSV file with data underlying figure 7B
+% * figure7B.md – Markdown file with numerical results associated with figure 7B.
 %
 
-%% Specify output files
+%% Specify figure name and output files
 
-fileFigure = [pathOutput, 'figure7B.pdf'];
-fileData = [pathOutput, 'figure7B.csv'];
-fileResults = [pathOutput, 'figure7B.md'];
+% Define figure number
+number = '7B';
+
+% Construct figure name
+figureName = ['Figure ', number];
+
+% Construct file names
+figureFile = fullfile(outputFolder, ['figure', number, '.pdf']);
+dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
+resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Get timeline
-timeline = makeTimeline(2020, 2023);
+% Produce quarterly timeline
+timeline = [1930 : 0.25 : 1950.75]';
 
 % Get recessions dates
-[startRecession, endRecession] = getRecessionPandemic(pathInput);
+[startRecession, endRecession] = getRecessionDepression(inputFolder);
 
 % Get unemployment rate
-u = getUnemploymentPandemic(pathInput);
+u = getUnemploymentDepression(inputFolder);
 
 % Get vacancy rate
-v = getVacancyPandemic(pathInput);
+v = getVacancyDepression(inputFolder);
 
-%% Compute labor-market tightness
+%% Compute FERU
 
-tightness = v ./ u;
+uStar = sqrt(u .* v);
+
+%% Compute unemployment gap
+
+gap = u - uStar;
 
 %% Produce figure
 
-iFigure = iFigure + 1;
-figure(iFigure)
+figure('NumberTitle', 'off', 'Name', figureName)
 hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xPandemic{:})
+set(ax, xDepression{:})
 
 % Format y-axis
-ax.YLim = [0, 2];
-ax.YTick =  [0:0.5:2];
-ax.YLabel.String =  'Tightness';
+ax.YLim = [0, 0.3];
+ax.YTick =  [0:0.05:0.3];
+ax.YTickLabel = [' 0%'; ' 5%'; '10%'; '15%'; '20%'; '25%'; '30%'];
+ax.YLabel.String =  'Share of labor force';
 
 % Paint recession areas
-xregion(startRecession, endRecession, areaRecession{:});
+xregion(startRecession, endRecession, grayArea{:});
 
-% Paint gap between tightness and full-employment line
-a = area(timeline(2:end), [ones(size(tightness(2:end))), max(tightness(2:end) - 1,0), min(tightness(2:end) - 1,0)], 'LineStyle', 'none');
+% Paint unemployment gap
+a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
 a(1).FaceAlpha = 0;
 a(2).FaceAlpha = 0.2;
 a(3).FaceAlpha = 0.2;
-a(2).FaceColor = orange;
-a(3).FaceColor = purple;
+a(2).FaceColor = purple;
+a(3).FaceColor = orange;
 
-% Plot labor-market tightness
-plot(timeline, tightness, linePurple{:})
-
-% Plot full-employment line
-yline(1, linePinkThin{:}, 'Alpha', 1)
+% Plot unemployment rate and FERU
+plot(timeline, u, purpleThinLine{:})
+plot(timeline, uStar, pinkLine{:})
 
 % Save figure
-print('-dpdf', fileFigure)
+print('-dpdf', figureFile)
 
 %% Save figure data
 
 % Write header
-header = {'Year', 'Tightness'};
-writecell(header, fileData, 'WriteMode', 'overwrite')
+header = {'Year',  'Unemployment rate', 'FERU', 'Unemployment gap'};
+writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, tightness];
-writematrix(data, fileData, 'WriteMode', 'append')
+data = [timeline, u, uStar, gap];
+writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
 % Compute results
-tightnessMean = mean(tightness);
-tightnessMax = max(tightness);
-tightnessMin = min(tightness);
+gapMean = mean(gap);
+[gapMax, iMax] = max(gap);
+[gapMin, iMin] = min(gap);
 
 % Clear result file
-fid = fopen(fileResults, 'w');
+fid = fopen(resultFile, 'w');
 fclose(fid);
 
 % Display and save results
-diary(fileResults)
+diary(resultFile)
 fprintf('\n')
-fprintf('* Average labor-market tightness: %4.2f \n', tightnessMean)
-fprintf('* Maximum labor-market tightness: %4.2f \n', tightnessMax)
-fprintf('* Minimum labor-market tightness: %4.2f \n', tightnessMin)
+fprintf('* Average unemployment gap: %4.3f \n', gapMean)
+fprintf('* Maximum unemployment gap: %4.3f in %4.2f \n', gapMax, timeline(iMax))
+fprintf('* Minimum unemployment gap: %4.3f in %4.2f \n', gapMin, timeline(iMin))
 fprintf('\n')
 diary off

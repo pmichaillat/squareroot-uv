@@ -4,93 +4,104 @@
 %
 %% Description
 %
-% This script produces figure 4A and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1930–1950.
+% This script produces figure 4A and associated numerical results. The figure displays the quarterly unemployment rate, vacancy rate, and FERU in the United States, 1951Q1–2019Q4.
+%
+%% Requirements
+%
+% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
+% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
+% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
 %
 %% Output
 %
-% * The figure is saved as figure4A.pdf.
-% * The figure data are saved in figure4A.csv.
-% * The numerical results are saved in figure4A.md.
+% * figure4A.pdf – PDF file with figure 4A
+% * figure4A.csv – CSV file with data underlying figure 4A
+% * figure4A.md – Markdown file with numerical results associated with figure 4A.
 %
 
-%% Specify output files
+%% Specify figure name and output files
 
-fileFigure = [pathOutput, 'figure4A.pdf'];
-fileData = [pathOutput, 'figure4A.csv'];
-fileResults = [pathOutput, 'figure4A.md'];
+% Define figure number
+number = '4A';
+
+% Construct figure name
+figureName = ['Figure ', number];
+
+% Construct file names
+figureFile = fullfile(outputFolder, ['figure', number, '.pdf']);
+dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
+resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Get timeline
-timeline = makeTimeline(1930, 1950);
+% Produce quarterly timeline
+timeline = [1951 : 0.25 : 2019.75]';
 
 % Get recessions dates
-[startRecession, endRecession] = getRecessionDepression(pathInput);
+[startRecession, endRecession] = getRecessionPostwar(inputFolder);
 
 % Get unemployment rate
-u = getUnemploymentDepression(pathInput);
+u = getUnemploymentPostwar(inputFolder);
 
 % Get vacancy rate
-v = getVacancyDepression(pathInput);
+v = getVacancyPostwar(inputFolder);
+
+%% Compute FERU
+
+uStar = sqrt(u .* v);
 
 %% Produce figure
 
-iFigure = iFigure + 1;
-figure(iFigure)
+figure('NumberTitle', 'off', 'Name', figureName)
 hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xDepression{:})
+set(ax, xPostwar{:})
 
 % Format y-axis
-ax.YLim = [0, 0.3];
-ax.YTick =  [0:0.06:0.3];
-ax.YTickLabel = [' 0%'; ' 6%'; '12%'; '18%'; '24%'; '30%'];
+ax.YLim = [0, 0.12];
+ax.YTick =  [0:0.02:0.12];
+ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'];
 ax.YLabel.String =  'Share of labor force';
 
 % Paint recession areas
-xregion(startRecession, endRecession, areaRecession{:});
+xregion(startRecession, endRecession, grayArea{:});
 
-% Plot unemployment and vacancy rates
-plot(timeline, u, linePurple{:})
-plot(timeline, v, lineOrange{:})
+% Plot unemployment rate, vacancy rate, and FERU
+plot(timeline, u, purpleThinLine{:})
+plot(timeline, v, orangeDashThinLine{:})
+plot(timeline, uStar, pinkLine{:})
 
 % Save figure
-print('-dpdf', fileFigure)
+print('-dpdf', figureFile)
 
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
-writecell(header, fileData, 'WriteMode', 'overwrite')
+header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
+writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
-data = [timeline, u, v];
-writematrix(data, fileData, 'WriteMode', 'append')
+data = [timeline, u, v, uStar];
+writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
 % Compute results
-uMean = mean(u);
-uMax = max(u);
-uMin = min(u);
-vMean = mean(v);
-vMax = max(v);
-vMin = min(v);
+uStarMean = mean(uStar);
+[uStarMax, iMax] = max(uStar);
+[uStarMin, iMin] = min(uStar);
 
 % Clear result file
-fid = fopen(fileResults, 'w');
+fid = fopen(resultFile, 'w');
 fclose(fid);
 
 % Display and save results
-diary(fileResults)
+diary(resultFile)
 fprintf('\n')
-fprintf('* Average unemployment rate: %4.3f \n', uMean)
-fprintf('* Maximum unemployment rate: %4.3f \n', uMax)
-fprintf('* Minimum unemployment rate: %4.3f \n', uMin)
-fprintf('* Average vacancy rate: %4.3f \n', vMean)
-fprintf('* Maximum vacancy rate: %4.3f \n', vMax)
-fprintf('* Minimum vacancy rate: %4.3f \n', vMin)
+fprintf('* Average FERU: %4.3f \n', uStarMean)
+fprintf('* Maximum FERU: %4.3f in %4.2f \n', uStarMax, timeline(iMax))
+fprintf('* Minimum FERU: %4.3f in %4.2f \n', uStarMin, timeline(iMin))
 fprintf('\n')
 diary off
