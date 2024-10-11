@@ -156,7 +156,7 @@ To generate all figures and numerical results from the paper, run the following 
 run('main.m')
 ```
 
-Before running the script, ensure you save a copy of the `figures` folder, as all files in that folder will be overwritten by the code.
+Before running the script, ensure you save a copy of the `figures` folder, as all files in that folder will be overwritten by the code when new figures are generated.
 
 Alternatively, you can save the new files produced by the code in a new folder. To do this, create a new folder `newfigures`, and then in `main.m`, adjust the output folder with the following line:
 
