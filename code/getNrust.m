@@ -1,6 +1,6 @@
 %% getNrust
 % 
-% Return the short-term NRU in the United States, 1949Q1–2020Q4
+% Return short-term NRU in the United States, 1949Q1–2020Q4
 %
 %% Syntax
 %
@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * nrust - 288-by-1 column vector
 %
 %% Description
 %
 % This function reads and returns the short-term NRU (natural/noncyclical rate of unemployment) in the United States, 1949Q1–2020Q4.
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %

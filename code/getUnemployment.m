@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * u – 378-by-1 column vector
 %
 %% Description
 %
 % This function returns the quarterly unemployment rate in the United States, 1930Q1–2024Q2. 
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 
 function u = getUnemployment(inputFolder)
@@ -31,6 +29,6 @@ uPostwar = getUnemploymentPostwar(inputFolder);
 % 2020Q1–2024Q2
 uPandemic = getUnemploymentPandemic(inputFolder);
 
-%% Splice three series into a long series
+%% Splice three series into one continuous series
 
 u = [uDepression; uPostwar; uPandemic];

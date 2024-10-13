@@ -8,9 +8,9 @@
 %
 %% Requirements
 %
-% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
-% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
-% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
+% * inputFolder – Path to the input folder (default: defined in main.m)
+% * outputFolder – Path to the output folder (default: defined in main.m)
+% * formatFigure.m – Script for plot formatting (default: run in main.m)
 %
 %% Output
 %
@@ -60,15 +60,11 @@ ax.YTickLabel = [' 0%'; ' 5%'; '10%'; '15%'; '20%'; '25%'; '30%'];
 ax.YLabel.String =  'Share of labor force';
 
 % Paint recession areas
-xregion(startRecession, endRecession, grayArea{:});
+xregion(startRecession, endRecession, grayArea{:})
 
-% Paint gap between unemployment and vacancy rates
-a = area(timeline, [v, max(u - v,0), min(u - v,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = orange;
+% Paint gap between unemployment and vacancy rates with distinct colors for positive and negative gaps
+h = area(timeline, [v, max(u - v,0), min(u - v,0)]);
+set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment and vacancy rates
 plot(timeline, u, purpleLine{:})

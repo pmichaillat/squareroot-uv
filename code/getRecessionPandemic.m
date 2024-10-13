@@ -8,7 +8,7 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * startRecession – 1-by-1 column vector
 % * endRecession – 1-by-1 column vector
 %
@@ -28,8 +28,6 @@
 % * The start dates are stored in startRecession.
 % * The end dates are stored in endRecession.
 %
-% The argument inputFolder gives the path to the folder with the raw data.
-
 %% Data source
 %
 % * National Bureau of Economic Research (2023)

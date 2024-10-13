@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * epsilon – 276-by-1 column vector
 %
 %% Description
 %
 % This function reads and returns the elasticity of the Beveridge curve in the United States, 1951Q1–2019Q4.
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %

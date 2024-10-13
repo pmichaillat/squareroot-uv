@@ -41,7 +41,7 @@ function result = monthly2quarterly(data)
 [row, col] = size(data);
 
 % Check that the number of observations is divisible by 3
-assert(mod(row,3) == 0, 'Number of observations must be divisible by 3.')
+assert(mod(row,3) == 0, 'Number of monthly observations must be divisible by 3 for quarterly conversion.')
 
 % Reshape the dataset so that L(:,i,j) contains the 3 monthly observations from series j in quarter i
 L = reshape(data, 3, row/3, col);

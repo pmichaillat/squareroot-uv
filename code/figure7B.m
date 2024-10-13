@@ -8,15 +8,15 @@
 %
 %% Requirements
 %
-% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
-% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
-% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
+% * inputFolder – Path to the input folder (default: defined in main.m)
+% * outputFolder – Path to the output folder (default: defined in main.m)
+% * formatFigure.m – Script for plot formatting (default: run in main.m)
 %
 %% Output
 %
 % * figure7B.pdf – PDF file with figure 7B
 % * figure7B.csv – CSV file with data underlying figure 7B
-% * figure7B.md – Markdown file with numerical results associated with figure 7B.
+% * figure7B.md – Markdown file with numerical results from figure 7B
 %
 
 %% Specify figure name and output files
@@ -70,15 +70,11 @@ ax.YTickLabel = [' 0%'; ' 5%'; '10%'; '15%'; '20%'; '25%'; '30%'];
 ax.YLabel.String =  'Share of labor force';
 
 % Paint recession areas
-xregion(startRecession, endRecession, grayArea{:});
+xregion(startRecession, endRecession, grayArea{:})
 
-% Paint unemployment gap
-a = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = purple;
-a(3).FaceColor = orange;
+% Paint unemployment gap with distinct colors for positive and negative gaps
+h = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)]);
+set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment rate and FERU
 plot(timeline, u, purpleThinLine{:})

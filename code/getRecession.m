@@ -8,7 +8,7 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * startRecession – 15-by-1 column vector
 % * endRecession – 15-by-1 column vector
 %
@@ -26,8 +26,6 @@
 % * 1951.5 is 1951Q3.
 % * 1951.75 is 1951Q4.
 %
-% The argument inputFolder gives the path to the folder with the raw data.
-%
 
 function [startRecession, endRecession] = getRecession(inputFolder)
 
@@ -42,7 +40,7 @@ function [startRecession, endRecession] = getRecession(inputFolder)
 % 2020Q1–2024Q2
 [startPandemic, endPandemic]  = getRecessionPandemic(inputFolder);
 
-%% Splice three series into a long series
+%% Splice three series into one continuous series
 
 startRecession = [startDepression; startPostwar; startPandemic];
 endRecession = [endDepression; endPostwar; endPandemic];

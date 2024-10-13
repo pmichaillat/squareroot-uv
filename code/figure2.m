@@ -1,6 +1,6 @@
 %% figure2.m
 % 
-% Produce the six panels of figure 2
+% Produce figures 2A, 2B, 2C, 2D, 2E, 2F
 %
 %% Description
 %
@@ -8,9 +8,9 @@
 %
 %% Requirements
 %
-% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
-% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
-% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
+% * inputFolder – Path to the input folder (default: defined in main.m)
+% * outputFolder – Path to the output folder (default: defined in main.m)
+% * formatFigure.m – Script for plot formatting (default: run in main.m)
 %
 %% Output
 %
@@ -25,27 +25,17 @@
 
 %% Specify figure name and output files
 
-% Define figure numbers
-number = {'2A', '2B', '2C', '2D', '2E', '2F', '2'};
+% Define figure number and panels
+number = '2';
+panel = {'A', 'B', 'C', 'D', 'E', 'F'};
 
-% Construct figure names
-clear figureName
-figureName{1} = ['Figure ', number{1}];
-figureName{2} = ['Figure ', number{2}];
-figureName{3} = ['Figure ', number{3}];
-figureName{4} = ['Figure ', number{4}];
-figureName{5} = ['Figure ', number{5}];
-figureName{6} = ['Figure ', number{6}];
-
-% Construct file names
-clear figureFile
-figureFile{1} = fullfile(outputFolder, ['figure', number{1}, '.pdf']);
-figureFile{2} = fullfile(outputFolder, ['figure', number{2}, '.pdf']);
-figureFile{3} = fullfile(outputFolder, ['figure', number{3}, '.pdf']);
-figureFile{4} = fullfile(outputFolder, ['figure', number{4}, '.pdf']);
-figureFile{5} = fullfile(outputFolder, ['figure', number{5}, '.pdf']);
-figureFile{6} = fullfile(outputFolder, ['figure', number{6}, '.pdf']);
-dataFile = fullfile(outputFolder, ['figure', number{7}, '.csv']);
+% Construct figure names and file names
+clear figureName figureFile
+for iPanel = 1:6
+	figureName{iPanel} = ['Figure ', number, panel{iPanel}];
+    figureFile{iPanel} = fullfile(outputFolder, ['figure', number, panel{iPanel}, '.pdf']);
+end
+dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
 
 %% Get data
 
@@ -107,7 +97,7 @@ for iBranch = 1 : nBranch
 	ax.YTickLabel = ['1%'; '2%'; '4%'; '8%'];
 	ax.YLabel.String =  'Vacancy rate (log scale)';
 
-	% Readjust axes position slightly to improve figure layout
+	% Slightly adjust axes position for better layout
 	ax.Position = ax.Position + [0.002,0.002,0,0]; 
 
 	% Plot background Beveridge curve
@@ -148,11 +138,9 @@ data(:, 3) = v;
 
 % Add data for each branch
 for iBranch = 1 : nBranch
-
 	header = {header{:},['Unemployment rate: branch ',num2str(iBranch)],['Vacancy rate: branch ',num2str(iBranch)]};
 	data(branch{iBranch}, 3+iBranch.*2-1) = u(branch{iBranch});
 	data(branch{iBranch}, 3+iBranch.*2) = v(branch{iBranch});
-
 end
 
 % Write header

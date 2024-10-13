@@ -8,21 +8,19 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * v – 18-by-1 column vector
 %
 %% Description
 %
 % This function constructs and returns the quarterly vacancy rate in the United States, 2020Q1–2024Q2:
 %
-% * The function reads the monthly vacancy level.
-% * The function reads the monthly labor-force level.
-% * The function divides vacancy level by labor-force level to obtain the monthly vacancy rate.
-% * The function returns the quarterly average of the monthly vacancy rate. 
+% * Reads the monthly vacancy level.
+% * Reads the monthly labor-force level.
+% * Calculates the monthly vacancy rate by dividing vacancy level by labor-force level.
+% * Returns the quarterly average of the monthly vacancy rate. 
 %
-% The argument inputFolder gives the path to the folder with the raw data.
-%
-%% Data sources
+%% Data source
 %
 % * Monthly vacancy level – US Bureau of Labor Statistics (2024f)
 % * Monthly labor-force level – US Bureau of Labor Statistics (2024a)

@@ -1,6 +1,6 @@
 %% getNairu
 % 
-% Return the NAIRU in the United States, 1960Q1–2023Q4
+% Return NAIRU in the United States, 1960Q1–2023Q4
 %
 %% Syntax
 %
@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * nairu - 256-by-1 column vector
 %
 %% Description
 %
 % This function reads and returns the NAIRU (non-accelerating-inflation rate of unemployment) in the United States, 1960Q1–2023Q4.
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %

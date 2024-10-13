@@ -8,15 +8,15 @@
 %
 %% Requirements
 %
-% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
-% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
-% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
+% * inputFolder – Path to the input folder (default: defined in main.m)
+% * outputFolder – Path to the output folder (default: defined in main.m)
+% * formatFigure.m – Script for plot formatting (default: run in main.m)
 %
 %% Output
 %
 % * figure3B.pdf – PDF file with figure 3B
 % * figure3B.csv – CSV file with data underlying figure 3B
-% * figure3B.md – Markdown file with numerical results associated with figure 3B.
+% * figure3B.md – Markdown file with numerical results from figure 3B
 %
 
 %% Specify figure name and output files
@@ -65,15 +65,11 @@ ax.YTick = [0:0.5:2];
 ax.YLabel.String =  'Labor-market tightness';
 
 % Paint recession areas
-xregion(startRecession, endRecession, grayArea{:});
+xregion(startRecession, endRecession, grayArea{:})
 
-% Paint gap between tightness and full-employment line
-a = area(timeline, [ones(size(tightness)), max(tightness - 1,0), min(tightness - 1,0)], 'LineStyle', 'none');
-a(1).FaceAlpha = 0;
-a(2).FaceAlpha = 0.2;
-a(3).FaceAlpha = 0.2;
-a(2).FaceColor = orange;
-a(3).FaceColor = purple;
+% Paint tightness gap with distinct colors for positive and negative gaps 
+h = area(timeline, [ones(size(tightness)), min(tightness - 1,0), max(tightness - 1,0)]);
+set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot labor-market tightness
 plot(timeline, tightness, orangeLine{:})

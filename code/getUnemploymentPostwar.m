@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * u – 276-by-1 column vector
 %
 %% Description
 %
 % This function reads the monthly unemployment rate in the United States, 1951Q1–2019Q4, and returns the quarterly average of the series. 
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %

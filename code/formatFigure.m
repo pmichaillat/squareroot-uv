@@ -18,6 +18,7 @@
 %   xregion(x, y, grayArea{:})
 %   plot(x, y, purpleLine{:})
 %   plot(x, y, orangeDashLine{:})
+%   set(gca, xPostwar{:})
 %
 
 %% Create function to convert object properties into cell arrays for application in plots
@@ -57,11 +58,17 @@ gray = '#bdbdbd';
 
 %% Predefine area properties
 
+% Define transparent, gray area
 clear obj
 obj.FaceColor = 'black';
 obj.LineStyle = 'none';
 obj.FaceAlpha = 0.1;
 grayArea = createProperty(obj);
+
+% Define purple and orange area for gaps
+purpleOrangeArea = 	{0, 	purple, 	'none' ;
+				0.2, 		purple, 	'none' ; 
+				0.2, 		orange, 	'none' };
 
 %% Predefine line properties
 

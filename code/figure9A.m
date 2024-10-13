@@ -8,15 +8,15 @@
 %
 %% Requirements
 %
-% * inputFolder – String giving the location of the input folder. By default inputFolder is defined in main.m.
-% * outputFolder – String giving the location of the output folder. By default outputFolder is defined in main.m.
-% * formatFigure.m – Script defining plot colors and properties. By default formatFigure.m is run in main.m.
+% * inputFolder – Path to the input folder (default: defined in main.m)
+% * outputFolder – Path to the output folder (default: defined in main.m)
+% * formatFigure.m – Script for plot formatting (default: run in main.m)
 %
 %% Output
 %
 % * figure9A.pdf – PDF file with figure 9A
 % * figure9A.csv – CSV file with data underlying figure 9A
-% * figure9A.md – Markdown file with numerical results associated with figure 9A.
+% * figure9A.md – Markdown file with numerical results from figure 9A
 %
 
 %% Specify figure name and output files
@@ -66,7 +66,7 @@ ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
 ax.YLabel.String =  'Share of labor force';
 
 % Paint recession areas
-xregion(startRecession, endRecession, grayArea{:});
+xregion(startRecession, endRecession, grayArea{:})
 
 % Plot unemployment rate, vacancy rate, and FERU
 plot(timeline, u, purpleThinLine{:})

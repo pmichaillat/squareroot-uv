@@ -8,14 +8,13 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * breakDate – 5-by-1 column vector
 %
 %% Description
 %
 % This function reads and returns the dates of the structural breaks in the US Beveridge curve between 1951Q1 and 2019Q4.
 %
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %

@@ -8,14 +8,12 @@
 %
 %% Arguments
 %
-% * inputFolder – String 
+% * inputFolder – Path to folder with raw data
 % * v – 378-by-1 column vector
 %
 %% Description
 %
 % This function returns the quarterly vacancy rate in the United States, 1930Q1–2024Q2. 
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 
 function v = getVacancy(inputFolder)

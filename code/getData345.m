@@ -1,6 +1,6 @@
 %% getData345
 % 
-% Return quarterly U3, U4, U5 unemployment rates and V3, V4, V5 vacancy rates in the United States, 1994Q1–2024Q2.
+% Return quarterly unemployment and vacancy rates associated with U3, U4, U5 concepts in the United States, 1994Q1–2024Q2
 %
 %% Syntax
 %
@@ -20,23 +20,21 @@
 %
 % This function produces various quarterly unemployment rates in the United States, 1994Q1–2024Q2:
 %
-% * u3 – Unemployment rate based on concept U3 of unemployment
-% * u4 – Unemployment rate based on concept U4 of unemployment
-% * u5 – Unemployment rate based on concept U5 of unemployment
+% * u3 – Unemployment rate based on U3 concept
+% * u4 – Unemployment rate based on U4 concept
+% * u5 – Unemployment rate based on U5 concept
 %
-% Given that the different notions of unemployment lead to different measures of the labor force, the vacancy rate = vacancy level / labor-force level must be adjusted for consistency when different unemployment concepts are used:
+% Given that the different concepts of unemployment lead to different measures of the labor force, the vacancy rate = vacancy level / labor-force level must be adjusted for consistency when different unemployment concepts are used:
 %
-% * v3 – Vacancy rate consistent with the concept U3 of unemployment
-% * v4 – Vacancy rate consistent with the concept U4 of unemployment
-% * v5 – Vacancy rate consistent with the concept U5 of unemployment
+% * v3 – Vacancy rate consistent with the U3 concept
+% * v4 – Vacancy rate consistent with the U4 concept
+% * v5 – Vacancy rate consistent with the U5 concept
 %
 % The vacancy rates are built from the same vacancy level but different labor-force levels:
 %
 % * v3 = vacancy level / standard labor force
 % * v4 = vacancy level / [standard labor force + discouraged workers]
 % * v5 = vacancy level / [standard labor force + marginally attached workers]
-%
-% The argument inputFolder gives the path to the folder with the raw data.
 %
 %% Data source
 %
@@ -90,7 +88,7 @@ laborforce5 = laborforce3 + marginal;
 
 %% Produce vacancy rates
 
-% Get quarterly vacancy rate for 1930Q1–2024Q2
+% Get quarterly vacancy rate from a longer dataset (1930Q1–2024Q2)
 vRate1930 = getVacancy(inputFolder);
 
 % Extract quarterly vacancy rate for 1994Q1–2024Q2
