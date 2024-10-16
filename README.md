@@ -49,7 +49,7 @@ The results in the paper are produced with MATLAB code. The code is placed in th
 
 The main script, `main.m`, orchestrates the production of the results in the paper:
 
-+ The script produces the 29 figures presented in the paper. The script generates each figure in a figure window and saves the figures as PDF files. The script saves the data used to generate each figure in CSV files.
++ The script produces the 30 figures presented in the paper. The script generates each figure in a figure window and saves the figures as PDF files. The script saves the data used to generate each figure in CSV files.
 + The script also produces the numerical results associated with each figure. The results are displayed in the command window and saved in Markdown files.
 
 ### Formatting script
@@ -80,7 +80,8 @@ The main script then produces the individual figures using a collection of scrip
 + `figure10.m` – Produce figure 10
 + `figure11.m` – Produce figure 11
 + `figure12.m` – Produce figure 12
-+ `figure13.m` – Produce figure 13
++ `figure13A.m` – Produce figure 13A
++ `figure13B.m` – Produce figure 13B
 + `figure14A.m` – Produce figure 14A
 + `figure14B.m` – Produce figure 14B
 + `figure15.m` – Produce figure 15
@@ -116,7 +117,7 @@ The production scripts rely on a collection of helper functions:
 
 ## Figures
 
-The 29 figures produced by the code are saved as 29 PDF files. The data used to generate each figure are saved in CSV files. And the numerical results associated with each figure are saved in Markdown files. All these files are placed in the `figures` folder, each corresponding to a specific figure in the paper:
+The 30 figures produced by the code are saved as 30 PDF files. The data used to generate each figure are saved in CSV files. And the numerical results associated with each figure are saved in Markdown files. All these files are placed in the `figures` folder, each corresponding to a specific figure in the paper:
 
 + `figure1A.pdf`, `figure1A.csv`, `figure1A.md` – Figure 1A
 + `figure1B.pdf`, `figure1B.csv` – Figure 1B
@@ -143,7 +144,8 @@ The 29 figures produced by the code are saved as 29 PDF files. The data used to 
 + `figure10.pdf`, `figure10.csv` – Figure 10
 + `figure11.pdf`, `figure11.csv`, `figure11.md` – Figure 11
 + `figure12.pdf`, `figure12.csv`, `figure12.md` – Figure 12
-+ `figure13.pdf`, `figure13.csv`, `figure13.md` – Figure 13
++ `figure13A.pdf`, `figure13A.csv`, `figure13A.md` – Figure 13A
++ `figure13B.pdf`, `figure13B.csv`, `figure13B.md` – Figure 13B
 + `figure14A.pdf`, `figure14A.csv`, `figure14A.md` – Figure 14A
 + `figure14B.pdf`, `figure14B.csv`, `figure14B.md` – Figure 14B
 + `figure15.pdf`, `figure15.csv`, `figure15.md` – Figure 15
