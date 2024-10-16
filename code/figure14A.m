@@ -38,10 +38,10 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Produce quarterly timeline
+% Generate quarterly timeline based on data range
 timeline = [1994 : 0.25 : 2024.25]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecession345(inputFolder);
 
 % Get unemployment and vacancy rates
@@ -83,10 +83,10 @@ h2 = plot(timeline, uStar4);
 plot(timeline, uStar3, pinkLine{:})
 
 % Format FERUs
-h1.Color = '#c994c7';
-h1.LineWidth = 2.4;
-h2.Color = '#df65b0';
-h2.LineWidth = 2.4;
+h1.Color = pinkLight;
+h1.LineWidth = thick;
+h2.Color = pinkMedium;
+h2.LineWidth = thick;
 
 % Save figure
 print('-dpdf', figureFile)

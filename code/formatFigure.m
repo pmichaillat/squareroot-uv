@@ -17,7 +17,7 @@
 %   plot(x, y, 'Color', pink)
 %   xregion(x, y, grayArea{:})
 %   plot(x, y, purpleLine{:})
-%   plot(x, y, orangeDashLine{:})
+%   plot(x, y, orangeDotDashLine{:})
 %   set(gca, xPostwar{:})
 %
 
@@ -54,7 +54,15 @@ set(groot, 'defaultAxesMinorGridLineStyle', 'none')
 orange = '#d95f02';
 purple = '#7570b3';
 pink = '#e7298a';
+pinkLight = '#c994c7';
+pinkMedium = '#df65b0';
 gray = '#bdbdbd';
+
+%% Predefine line width
+
+thick = 2.4;
+medium = thick ./ 2;
+thin = thick ./ 3;
 
 %% Predefine area properties
 
@@ -66,59 +74,54 @@ obj.FaceAlpha = 0.1;
 grayArea = createProperty(obj);
 
 % Define purple and orange area for gaps
-purpleOrangeArea = 	{0, 	purple, 	'none' ;
-				0.2, 		purple, 	'none' ; 
-				0.2, 		orange, 	'none' };
+purpleOrangeArea = 	{0, purple, 'none' ;
+					0.2, purple, 'none' ; 
+					0.2, orange, 'none' };
 
 %% Predefine line properties
 
 % Define solid, thick, orange line
 clear obj
 obj.Color = orange;
-obj.LineWidth = 2.4;
-obj.LineStyle = '-';
+obj.LineWidth = thick;
 orangeLine = createProperty(obj);
 
-% Define dashed, thick, orange line
+% Define dot-dashed, thick, orange line
 clear obj
 obj.Color = orange;
-obj.LineWidth = 2.4;
+obj.LineWidth = thick;
 obj.LineStyle = '-.';
-orangeDashLine = createProperty(obj);
+orangeDotDashLine = createProperty(obj);
 
-% Define dashed, thin, orange line
+% Define dot-dashed, medium, orange line
 clear obj
 obj.Color = orange;
-obj.LineWidth = 1.2;
+obj.LineWidth = medium;
 obj.LineStyle = '-.';
-orangeDashThinLine = createProperty(obj);
+orangeDotDashThinLine = createProperty(obj);
 
 % Define solid, thick, purple line
 clear obj
 obj.Color = purple;
-obj.LineWidth = 2.4;
-obj.LineStyle = '-';
+obj.LineWidth = thick;
 purpleLine = createProperty(obj);
 
-% Define solid, thin, purple line
+% Define solid, medium, purple line
 clear obj
 obj.Color = purple;
-obj.LineWidth = 1.2;
-obj.LineStyle = '-';
+obj.LineWidth = medium;
 purpleThinLine = createProperty(obj);
 
 % Define solid, thick, pink line
 clear obj
 obj.Color = pink;
-obj.LineWidth = 2.4;
-obj.LineStyle = '-';
+obj.LineWidth = thick;
 pinkLine = createProperty(obj);
 
-% Define solid, very thin, pink line
+% Define solid, thin, pink line
 clear obj
 obj.Color = pink;
-obj.LineWidth = 0.8;
-obj.LineStyle = '-';
+obj.LineWidth = thin;
 pinkThinLine = createProperty(obj);
 
 %% Predefine axis properties
@@ -127,7 +130,7 @@ pinkThinLine = createProperty(obj);
 clear obj
 obj.Xlim = [1930, 2024.25];
 obj.XTick = [1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
-xTotal = createProperty(obj);
+x = createProperty(obj);
 
 % Define x-axis for 1951Q1–2019Q4 period
 clear obj

@@ -32,10 +32,10 @@ dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
 
 %% Get data
 
-% Produce quarterly timeline
+% Generate quarterly timeline based on data range
 timeline = [1930 : 0.25 : 1950.75]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecessionDepression(inputFolder);
 
 % Get unemployment rate
@@ -68,7 +68,7 @@ set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment and vacancy rates
 plot(timeline, u, purpleLine{:})
-plot(timeline, v, orangeDashLine{:})
+plot(timeline, v, orangeDotDashLine{:})
 
 % Save figure
 print('-dpdf', figureFile)

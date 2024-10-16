@@ -34,10 +34,10 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Produce quarterly timeline
+% Generate quarterly timeline based on data range
 timeline = [1930 : 0.25 : 2024.25]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecession(inputFolder);
 
 % Get unemployment rate
@@ -57,7 +57,7 @@ hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xTotal{:})
+set(ax, x{:})
 
 % Format y-axis
 ax.YLim = log([0.005, 0.3]);
@@ -74,11 +74,11 @@ set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment rate, vacancy rate, and FERU
 plot(timeline, log(u), purpleThinLine{:})
-plot(timeline, log(v), orangeDashThinLine{:})
+plot(timeline, log(v), orangeDotDashThinLine{:})
 plot(timeline, log(uStar), pinkLine{:})
 
 % Hide black box on top of figure
-plot(timeline,log(0.3).*ones(size(timeline)),'Color','#E6E6E6','LineWidth',0.82)
+plot(timeline, log(0.3) .* ones(size(timeline)), 'Color', '#E6E6E6', 'LineWidth', 0.82)
 
 % Save figure
 print('-dpdf', figureFile)

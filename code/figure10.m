@@ -68,7 +68,7 @@ h1 = plot(u, v);
 
 % Format Beveridge curve
 h1.Color = gray;
-h1.LineWidth = 0.8;
+h1.LineWidth = thin;
 h1.MarkerSize = 1;
 h1.MarkerFaceColor = gray;
 h1.LineStyle = '-.';

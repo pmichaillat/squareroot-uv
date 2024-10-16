@@ -39,13 +39,13 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Produce quarterly timelines
+% Generate quarterly timeline based on data ranges
 timeline = [1930 : 0.25 : 2024.25]';
 timelineNru = [1949 : 0.25 : 2024.25]';
 timelineNrust = [1949 : 0.25 : 2020.75]';
 timelineNairu = [1960 : 0.25 : 2023.75]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecession(inputFolder);
 
 % Get vacancy rate
@@ -74,7 +74,7 @@ hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xTotal{:})
+set(ax, x{:})
 
 % Format y-axis
 ax.YLim = [0, 0.1];
@@ -93,13 +93,13 @@ plot(timeline, uStar, pinkLine{:})
 
 % Format unemployment targets
 h1.Color = gray;
-h1.LineWidth = 2.4;
+h1.LineWidth = thick;
 h1.LineStyle = '-.';
 h2.Color = '#737373';
-h2.LineWidth = 2.4;
+h2.LineWidth = thick;
 h2.LineStyle = ':';
 h3.Color = '#252525';
-h3.LineWidth = 2.4;
+h3.LineWidth = thick;
 h3.LineStyle = '-.';
 
 % Save figure

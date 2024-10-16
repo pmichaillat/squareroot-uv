@@ -58,7 +58,8 @@ figure9B
 figure10
 figure11
 figure12
-figure13
+figure13A
+figure13B
 figure14A
 figure14B
 figure15

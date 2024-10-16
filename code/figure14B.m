@@ -38,10 +38,10 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Produce quarterly timeline
+% Generate quarterly timeline based on data range
 timeline = [1994 : 0.25 : 2024.25]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecession345(inputFolder);
 
 % Get unemployment and vacancy rates
@@ -96,9 +96,9 @@ plot(timeline, gap3, purpleLine{:})
 
 % Format unemployment gaps
 h1.Color = '#bcbddc';
-h1.LineWidth = 2.4;
+h1.LineWidth = thick;
 h2.Color = '#9e9ac8';
-h2.LineWidth = 2.4;
+h2.LineWidth = thick;
 
 % Plot full-employment line
 plot(timeline, zeros(size(timeline)), pinkThinLine{:})

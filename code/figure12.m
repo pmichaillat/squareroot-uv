@@ -34,10 +34,10 @@ resultFile = fullfile(outputFolder, ['figure', number, '.md']);
 
 %% Get data
 
-% Produce quarterly timeline
+% Generate quarterly timeline based on data range
 timeline = [1930 : 0.25 : 2024.25]';
 
-% Get recessions dates
+% Get recession dates
 [startRecession, endRecession] = getRecession(inputFolder);
 
 % Get unemployment rate
@@ -57,7 +57,7 @@ hold on
 
 % Format x-axis
 ax = gca;
-set(ax, xTotal{:})
+set(ax, x{:})
 
 % Format y-axis
 ax.YLim = log([0.03, 8]);
