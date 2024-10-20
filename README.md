@@ -152,7 +152,7 @@ The 30 figures produced by the code are saved as 30 PDF files. The data used to 
 
 ## Usage
 
-To generate all figures and numerical results from the paper, run the following command in MATLAB:
+To generate all figures and numerical results presented in the paper, run the following command in MATLAB:
 
 ```matlab
 run('main.m')
