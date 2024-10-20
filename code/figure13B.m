@@ -4,13 +4,13 @@
 %
 %% Description
 %
-% This script produces figure 13B and associated numerical results. The figure displays the quarterly FERU in the United States, 1930Q1–2024Q2, for a range of calibrations:
+% This script produces figure 13B and associated numerical results. The figure displays the quarterly FERU in the United States, 1930Q1–2024Q2, for a range of alternative calibrations:
 %
 % * Beveridge elasticity between 0.75 and 1.25
 % * Recruiting cost between 0.75 and 1.25
 % * Social product of unemployed labor between -0.25 and 0.25 
 %
-% For each calibration, the FERU is computed using generalized formula (8).
+% For each calibration, the FERU is computed using generalized formula (8), with the other parameters set to their baseline values.
 %
 %% Requirements
 %
@@ -55,17 +55,17 @@ v = getVacancy(inputFolder);
 %% Calibrate parameters
 
 % Calibrate Beveridge elasticity
-epsilon = 1;
+epsilonBaseline = 1;
 epsilonLow = 0.75;
 epsilonHigh = 1.25;
 
 % Calibrate recruiting cost
-kappa = 1;
+kappaBaseline = 1;
 kappaLow = 0.75;
 kappaHigh = 1.25;
 
 % Calibrate social product of unemployed labor
-zeta = 0;
+zetaBaseline = 0;
 zetaLow = -0.25;
 zetaHigh = 0.25;
 
@@ -76,19 +76,19 @@ uStar = @(u, v, epsilon, kappa, zeta) (kappa .* epsilon .* v .* (u.^epsilon) ./ 
 %% Compute FERU using generalized formula (8) for various calibrations
 
 % Compute baseline FERU
-uStarBaseline = uStar(u, v, epsilon, kappa, zeta);
+uStarBaseline = uStar(u, v, epsilonBaseline, kappaBaseline, zetaBaseline);
 
 % Compute FERU for low and high Beveridge elasticities
-uStarEpsilonLow = uStar(u, v, epsilonLow, kappa, zeta);
-uStarEpsilonHigh = uStar(u, v, epsilonHigh, kappa, zeta);
+uStarEpsilonLow = uStar(u, v, epsilonLow, kappaBaseline, zetaBaseline);
+uStarEpsilonHigh = uStar(u, v, epsilonHigh, kappaBaseline, zetaBaseline);
 
 % Compute FERU for low and high recruiting costs
-uStarKappaLow = uStar(u, v, epsilon, kappaLow, zeta);
-uStarKappaHigh = uStar(u, v, epsilon, kappaHigh, zeta);
+uStarKappaLow = uStar(u, v, epsilonBaseline, kappaLow, zetaBaseline);
+uStarKappaHigh = uStar(u, v, epsilonBaseline, kappaHigh, zetaBaseline);
 
 % Compute FERU for low and high social products of unemployed labor
-uStarZetaLow = uStar(u, v, epsilon, kappa, zetaLow);
-uStarZetaHigh = uStar(u, v, epsilon, kappa, zetaHigh);
+uStarZetaLow = uStar(u, v, epsilonBaseline, kappaBaseline, zetaLow);
+uStarZetaHigh = uStar(u, v, epsilonBaseline, kappaBaseline, zetaHigh);
 
 %% Produce figure
 
@@ -169,18 +169,9 @@ writematrix(round(data,4), dataFile, 'WriteMode', 'append')
 %% Produce numerical results
 
 % Compute results
-distanceEpsilonLowMean = mean(abs(uStarEpsilonLow - uStarBaseline));
-distanceEpsilonHighMean = mean(abs(uStarEpsilonHigh - uStarBaseline));
-distanceKappaLowMean = mean(abs(uStarKappaLow - uStarBaseline));
-distanceKappaHighMean = mean(abs(uStarKappaHigh - uStarBaseline));
-distanceZetaLowMean = mean(abs(uStarZetaLow - uStarBaseline));
-distanceZetaHighMean = mean(abs(uStarZetaHigh - uStarBaseline));
-[distanceEpsilonLowMax, iEpsilonLowMax] = max(abs(uStarEpsilonLow - uStarBaseline));
-[distanceEpsilonHighMax, iEpsilonHighMax] = max(abs(uStarEpsilonHigh - uStarBaseline));
-[distanceKappaLowMax, iKappaLowMax] = max(abs(uStarKappaLow - uStarBaseline));
-[distanceKappaHighMax, iKappaHighMax] = max(abs(uStarKappaHigh- uStarBaseline));
-[distanceZetaLowMax, iZetaLowMax] = max(abs(uStarZetaLow - uStarBaseline));
-[distanceZetaHighMax, iZetaHighMax] = max(abs(uStarZetaHigh - uStarBaseline));
+widthEpsilonMean = mean(abs(uStarEpsilonLow - uStarEpsilonHigh));
+widthKappaMean = mean(abs(uStarKappaLow - uStarKappaHigh));
+widthZetaMean = mean(abs(uStarZetaLow - uStarZetaHigh));
 
 % Clear result file
 fid = fopen(resultFile, 'w');
@@ -189,23 +180,15 @@ fclose(fid);
 % Display and save results
 diary(resultFile)
 fprintf('\n')
-fprintf('* Average distance between baseline FERU and FERU with epsilon = 0.75: %4.3f \n', distanceEpsilonLowMean)
-fprintf('* Average distance between baseline FERU and FERU with epsilon = 1.25: %4.3f \n', distanceEpsilonHighMean)
-fprintf('* Average distance between baseline FERU and FERU with kappa = 0.75: %4.3f \n', distanceKappaLowMean)
-fprintf('* Average distance between baseline FERU and FERU with kappa = 1.25: %4.3f \n', distanceKappaHighMean)
-fprintf('* Average distance between baseline FERU and FERU with zeta = -0.25: %4.3f \n', distanceZetaLowMean)
-fprintf('* Average distance between baseline FERU and FERU with zeta = 0.25: %4.3f \n', distanceZetaHighMean)
-fprintf('* Maximum distance between baseline FERU and FERU with epsilon = 0.75: %4.3f in %4.2f\n', distanceEpsilonLowMax, timeline(iEpsilonLowMax))
-fprintf('* Maximum distance between baseline FERU and FERU with epsilon = 1.25: %4.3f in %4.2f\n', distanceEpsilonHighMax, timeline(iEpsilonHighMax))
-fprintf('* Maximum distance between baseline FERU and FERU with kappa = 0.75: %4.3f in %4.2f\n', distanceKappaLowMax, timeline(iKappaLowMax))
-fprintf('* Maximum distance between baseline FERU and FERU with kappa = 1.25: %4.3f in %4.2f\n', distanceKappaHighMax, timeline(iKappaHighMax))
-fprintf('* Maximum distance between baseline FERU and FERU with zeta = -0.25: %4.3f in %4.2f\n', distanceZetaLowMax, timeline(iZetaLowMax))
-fprintf('* Maximum distance between baseline FERU and FERU with zeta = 0.25: %4.3f in %4.2f\n', distanceZetaHighMax, timeline(iZetaHighMax))
-fprintf('* Distance between baseline FERU and FERU with epsilon = 0.75 in 2024Q2: %4.3f \n', abs(uStarEpsilonLow(end) - uStarBaseline(end)))
-fprintf('* Distance between baseline FERU and FERU with epsilon = 1.25 in 2024Q2: %4.3f \n', abs(uStarEpsilonHigh(end) - uStarBaseline(end)))
-fprintf('* Distance between baseline FERU and FERU with kappa = 0.75 in 2024Q2: %4.3f \n', abs(uStarKappaLow(end) - uStarBaseline(end)))
-fprintf('* Distance between baseline FERU and FERU with kappa = 1.25 in 2024Q2: %4.3f \n', abs(uStarKappaHigh(end) - uStarBaseline(end)))
-fprintf('* Distance between baseline FERU and FERU with zeta = -0.25 in 2024Q2: %4.3f \n', abs(uStarZetaLow(end) - uStarBaseline(end)))
-fprintf('* Distance between baseline FERU and FERU with zeta = 0.25 in 2024Q2: %4.3f \n', abs(uStarZetaHigh(end) - uStarBaseline(end)))
+fprintf('* Baseline FERU in 2024Q2: %4.3f \n', uStarBaseline(end))
+fprintf('* FERU with epsilon = 0.75 in 2024Q2: %4.3f \n', uStarEpsilonLow(end))
+fprintf('* FERU with epsilon = 1.25 in 2024Q2: %4.3f \n', uStarEpsilonHigh(end))
+fprintf('* FERU with kappa = 0.75 in 2024Q2: %4.3f \n', uStarKappaLow(end))
+fprintf('* FERU with kappa = 1.25 in 2024Q2: %4.3f \n', uStarKappaHigh(end))
+fprintf('* FERU with zeta = -0.25 in 2024Q2: %4.3f \n', uStarZetaLow(end))
+fprintf('* FERU with zeta = 0.25 in 2024Q2: %4.3f \n', uStarZetaHigh(end))
+fprintf('* Average width of FERU area when 0.75 < epsilon < 1.25: %4.3f \n', widthEpsilonMean)
+fprintf('* Average width of FERU area when 0.75 < kappa < 1.25: %4.3f \n', widthKappaMean)
+fprintf('* Average width of FERU area when -0.25 < zeta < 0.25: %4.3f \n', widthZetaMean)
 fprintf('\n')
 diary off
