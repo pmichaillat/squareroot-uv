@@ -12,34 +12,34 @@ The raw data used by the code to produce the results in the paper are stored as 
 
 + `20210719_cycle_dates_pasted.csv` – US recession dates, 1930–2024
 	+ Source: [National Bureau of Economic Research (2023)](http://data.nber.org/data/cycles/)
-+ `CLF16OV.csv` – US labor-force level, 1948–2024
-	+ Source: [US Bureau of Labor Statistics (2024a)](https://fred.stlouisfed.org/series/CLF16OV)
++ `CLF16OV.csv` – US labor force level, 1948–2024
+	+ Source: [Bureau of Labor Statistics (2024a)](https://fred.stlouisfed.org/series/CLF16OV)
 + `CompositeHWI.xlsx - Sheet1.csv` – US vacancy rate, 1951–2020
 	+ Source: [Barnichon (2010)](https://docs.google.com/spreadsheets/d/1fkMinSHkjTL99-bLZYFldQ8rHtgh8lxd)
 + `ustar.csv` – US NAIRU, 1960–2023
-	+ Source: [Crump, Eusepi, Giannoni, Sahin (2024)](https://doi.org/10.1016/j.jmoneco.2024.103580)
+	+ Source: [Crump, Eusepi, Giannoni, and Sahin (2024)](https://doi.org/10.1016/j.jmoneco.2024.103580)
 + `figure5.csv` – Dates of structural breaks in the US Beveridge curve, 1951–2019
-	+ Source: [Michaillat, Saez (2021a)](https://github.com/pmichaillat/unemployment-gap)
+	+ Source: [Michaillat and Saez (2021a)](https://github.com/pmichaillat/unemployment-gap)
 + `figure6.csv` – Elasticity of the US Beveridge curve, 1951–2019
-	+ Source: [Michaillat, Saez (2021a)](https://github.com/pmichaillat/unemployment-gap)
+	+ Source: [Michaillat and Saez (2021a)](https://github.com/pmichaillat/unemployment-gap)
 + `HistoricalSeries_JME_2020January.csv` – US unemployment and vacancy rates, 1890–2017
-	+ Source: [Petrosky-Nadeau, Zhang (2021)](https://docs.google.com/spreadsheets/d/1Ym0zkHZtIvb73zjLzL2cz_P5lXrulzFgvZpA5ZYyElI)
+	+ Source: [Petrosky-Nadeau and Zhang (2021)](https://docs.google.com/spreadsheets/d/1Ym0zkHZtIvb73zjLzL2cz_P5lXrulzFgvZpA5ZYyElI)
 + `JTSJOL.csv` – Job openings in the United States, 2001–2024
-	+ Source: [US Bureau of Labor Statistics (2024f)](https://fred.stlouisfed.org/series/JTSJOL)
+	+ Source: [Bureau of Labor Statistics (2024f)](https://fred.stlouisfed.org/series/JTSJOL)
 + `LNU05026642.csv` – Marginally attached workers in the United States, 1994–2024
-	+ Source: [US Bureau of Labor Statistics (2024h)](https://fred.stlouisfed.org/series/LNU05026642)
+	+ Source: [Bureau of Labor Statistics (2024h)](https://fred.stlouisfed.org/series/LNU05026642)
 + `LNU05026645.csv` – Discouraged workers in the United States, 1994–2024
-	+ Source: [US Bureau of Labor Statistics (2024g)](https://fred.stlouisfed.org/series/LNU05026645)
+	+ Source: [Bureau of Labor Statistics (2024g)](https://fred.stlouisfed.org/series/LNU05026645)
 + `NROU.csv` – US NRU, 1949–2024
-	+ Source: [US Congressional Budget Office (2024)](https://fred.stlouisfed.org/series/NROU)
+	+ Source: [Congressional Budget Office (2024)](https://fred.stlouisfed.org/series/NROU)
 + `NROUST.csv` – US short-term NRU, 1949–2021
-	+ Source: [US Congressional Budget Office (2021)](https://fred.stlouisfed.org/series/NROUST)
+	+ Source: [Congressional Budget Office (2021)](https://fred.stlouisfed.org/series/NROUST)
 + `U4RATE.csv` – US U4 unemployment rate, 1994–2024
-	+ Source: [US Bureau of Labor Statistics (2024i)](https://fred.stlouisfed.org/series/U4RATE)
+	+ Source: [Bureau of Labor Statistics (2024i)](https://fred.stlouisfed.org/series/U4RATE)
 + `U5RATE.csv` – US U5 unemployment rate, 1994–2024
-	+ Source: [US Bureau of Labor Statistics (2024j)](https://fred.stlouisfed.org/series/U5RATE)
+	+ Source: [Bureau of Labor Statistics (2024j)](https://fred.stlouisfed.org/series/U5RATE)
 + `UNRATE.csv` – US unemployment (U3) rate, 1948–2024
-	+ Source: [US Bureau of Labor Statistics (2024k)](https://fred.stlouisfed.org/series/UNRATE)
+	+ Source: [Bureau of Labor Statistics (2024k)](https://fred.stlouisfed.org/series/UNRATE)
 
 ## Code
 
@@ -60,30 +60,30 @@ Before the computations begin, the main script calls the script `formatFigure.m`
 
 The main script then produces the individual figures using a collection of scripts:
 
-+ `figure1A.m` – Produce figure 1A
-+ `figure1B.m` – Produce figure 1B
-+ `figure2.m` – Produce figures 2A, 2B, 2C, 2D, 2E, 2F
-+ `figure3A.m` – Produce figure 3A
-+ `figure3B.m` – Produce figure 3B
-+ `figure4A.m` – Produce figure 4A
-+ `figure4B.m` – Produce figure 4B
-+ `figure5A.m` – Produce figure 5A
-+ `figure5B.m` – Produce figure 5B
-+ `figure6A.m` – Produce figure 6A
-+ `figure6B.m` – Produce figure 6B
-+ `figure7A.m` – Produce figure 7A
-+ `figure7B.m` – Produce figure 7B
-+ `figure8A.m` – Produce figure 8A
-+ `figure8B.m` – Produce figure 8B
-+ `figure9A.m` – Produce figure 9A
-+ `figure9B.m` – Produce figure 9B
++ `figure1A.m` – Produce panel A of figure 1
++ `figure1B.m` – Produce panel B of figure 1
++ `figure2.m` – Produce panels A, B, C, D, E, and F of figure 2
++ `figure3A.m` – Produce panel A of figure 3
++ `figure3B.m` – Produce panel B of figure 3
++ `figure4A.m` – Produce panel A of figure 4
++ `figure4B.m` – Produce panel B of figure 4
++ `figure5A.m` – Produce panel A of figure 5
++ `figure5B.m` – Produce panel B of figure 5
++ `figure6A.m` – Produce panel A of figure 6
++ `figure6B.m` – Produce panel B of figure 6
++ `figure7A.m` – Produce panel A of figure 7
++ `figure7B.m` – Produce panel B of figure 7
++ `figure8A.m` – Produce panel A of figure 8
++ `figure8B.m` – Produce panel B of figure 8
++ `figure9A.m` – Produce panel A of figure 9
++ `figure9B.m` – Produce panel B of figure 9
 + `figure10.m` – Produce figure 10
 + `figure11.m` – Produce figure 11
 + `figure12.m` – Produce figure 12
-+ `figure13A.m` – Produce figure 13A
-+ `figure13B.m` – Produce figure 13B
-+ `figure14A.m` – Produce figure 14A
-+ `figure14B.m` – Produce figure 14B
++ `figure13A.m` – Produce panel A of figure 13
++ `figure13B.m` – Produce panel B of figure 13
++ `figure14A.m` – Produce panel A of figure 14
++ `figure14B.m` – Produce panel B of figure 14
 + `figure15.m` – Produce figure 15
 
 The scripts produce figures in figure windows, save a copy of each figure in PDF format, and save the data used to generate each figure in CSV files. Each script also produces the numerical results associated with the figure. The results are displayed in the command window and saved in a Markdown file.
@@ -119,35 +119,35 @@ The production scripts rely on a collection of helper functions:
 
 The 30 figures produced by the code are saved as 30 PDF files. The data used to generate each figure are saved in CSV files. And the numerical results associated with each figure are saved in Markdown files. All these files are placed in the `figures` folder, each corresponding to a specific figure in the paper:
 
-+ `figure1A.pdf`, `figure1A.csv`, `figure1A.md` – Figure 1A
-+ `figure1B.pdf`, `figure1B.csv` – Figure 1B
-+ `figure2A.pdf`, `figure2.csv` – Figure 2A
-+ `figure2B.pdf`, `figure2.csv` – Figure 2B
-+ `figure2C.pdf`, `figure2.csv` – Figure 2C
-+ `figure2D.pdf`, `figure2.csv` – Figure 2D
-+ `figure2E.pdf`, `figure2.csv` – Figure 2E
-+ `figure2F.pdf`, `figure2.csv` – Figure 2F
-+ `figure3A.pdf`, `figure3A.csv` – Figure 3A
-+ `figure3B.pdf`, `figure3B.csv`, `figure3B.md` – Figure 3B
-+ `figure4A.pdf`, `figure4A.csv`, `figure4A.md` – Figure 4A
-+ `figure4B.pdf`, `figure4B.csv`, `figure4B.md` – Figure 4B
-+ `figure5A.pdf`, `figure5A.csv`, `figure5A.md` – Figure 5A
-+ `figure5B.pdf`, `figure5B.csv`, `figure5B.md` – Figure 5B
-+ `figure6A.pdf`, `figure6A.csv` – Figure 6A
-+ `figure6B.pdf`, `figure6B.csv`, `figure6B.md` – Figure 6B
-+ `figure7A.pdf`, `figure7A.csv`, `figure7A.md` – Figure 7A
-+ `figure7B.pdf`, `figure7B.csv`, `figure7B.md` – Figure 7B
-+ `figure8A.pdf`, `figure8A.csv`, `figure8A.md` – Figure 8A
-+ `figure8B.pdf`, `figure8B.csv`, `figure8B.md` – Figure 8B
-+ `figure9A.pdf`, `figure9A.csv`, `figure9A.md` – Figure 9A
-+ `figure9B.pdf`, `figure9B.csv`, `figure9B.md` – Figure 9B
++ `figure1A.pdf`, `figure1A.csv`, `figure1A.md` – Panel A of figure 1
++ `figure1B.pdf`, `figure1B.csv` – Panel B of figure 1
++ `figure2A.pdf`, `figure2.csv` – Panel A of figure 2
++ `figure2B.pdf`, `figure2.csv` – Panel B of figure 2
++ `figure2C.pdf`, `figure2.csv` – Panel C of Figure 2
++ `figure2D.pdf`, `figure2.csv` – Panel D of Figure 2
++ `figure2E.pdf`, `figure2.csv` – Panel E of Figure 2
++ `figure2F.pdf`, `figure2.csv` – Panel F of Figure 2
++ `figure3A.pdf`, `figure3A.csv` – Panel A of figure 3
++ `figure3B.pdf`, `figure3B.csv`, `figure3B.md` –  Panel B of figure 3
++ `figure4A.pdf`, `figure4A.csv`, `figure4A.md` – Panel A of figure 4
++ `figure4B.pdf`, `figure4B.csv`, `figure4B.md` – Panel B of figure 4
++ `figure5A.pdf`, `figure5A.csv`, `figure5A.md` – Panel A of figure 5
++ `figure5B.pdf`, `figure5B.csv`, `figure5B.md` – Panel B of figure 5
++ `figure6A.pdf`, `figure6A.csv` – Panel A of figure 6
++ `figure6B.pdf`, `figure6B.csv`, `figure6B.md` – Panel B of figure 6
++ `figure7A.pdf`, `figure7A.csv`, `figure7A.md` – Panel A of figure 7
++ `figure7B.pdf`, `figure7B.csv`, `figure7B.md` – Panel B of figure 7
++ `figure8A.pdf`, `figure8A.csv`, `figure8A.md` – Panel A of figure 8
++ `figure8B.pdf`, `figure8B.csv`, `figure8B.md` – Panel B of figure 8
++ `figure9A.pdf`, `figure9A.csv`, `figure9A.md` – Panel A of figure 9
++ `figure9B.pdf`, `figure9B.csv`, `figure9B.md` – Panel B of figure 9
 + `figure10.pdf`, `figure10.csv` – Figure 10
 + `figure11.pdf`, `figure11.csv`, `figure11.md` – Figure 11
 + `figure12.pdf`, `figure12.csv`, `figure12.md` – Figure 12
-+ `figure13A.pdf`, `figure13A.csv`, `figure13A.md` – Figure 13A
-+ `figure13B.pdf`, `figure13B.csv`, `figure13B.md` – Figure 13B
-+ `figure14A.pdf`, `figure14A.csv`, `figure14A.md` – Figure 14A
-+ `figure14B.pdf`, `figure14B.csv`, `figure14B.md` – Figure 14B
++ `figure13A.pdf`, `figure13A.csv`, `figure13A.md` – Panel A of figure 13
++ `figure13B.pdf`, `figure13B.csv`, `figure13B.md` – Panel B of figure 13
++ `figure14A.pdf`, `figure14A.csv`, `figure14A.md` – Panel A of figure 14
++ `figure14B.pdf`, `figure14B.csv`, `figure14B.md` – Panel B of figure 14
 + `figure15.pdf`, `figure15.csv`, `figure15.md` – Figure 15
 
 ## Usage
