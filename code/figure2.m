@@ -1,10 +1,10 @@
 %% figure2.m
 % 
-% Produce figures 2A, 2B, 2C, 2D, 2E, 2F
+% Produce panels A, B, C, D, E, and F of figure 2
 %
 %% Description
 %
-% This script produces figures 2A, 2B, 2C, 2D, 2E, and 2F. The six panels display on log scales the six branches of the Beveridge curve in the United States, 1951Q1–2019Q4.
+% This script produces panels A–F of figure 2. The six panels display on log scales the six branches of the Beveridge curve in the United States, 1951Q1–2019Q4.
 %
 %% Requirements
 %
@@ -14,27 +14,30 @@
 %
 %% Output
 %
-% * figure2A.pdf – PDF file with figure 2A
-% * figure2B.pdf – PDF file with figure 2B
-% * figure2C.pdf – PDF file with figure 2C
-% * figure2D.pdf – PDF file with figure 2D
-% * figure2E.pdf – PDF file with figure 2E
-% * figure2F.pdf – PDF file with figure 2F
-% * figure2.csv – CSV file with data underlying figures 2A–2F
+% * figure2A.pdf – PDF file with panel A of figure 2
+% * figure2B.pdf – PDF file with panel B of figure 2
+% * figure2C.pdf – PDF file with panel C of figure 2
+% * figure2D.pdf – PDF file with panel D of figure 2
+% * figure2E.pdf – PDF file with panel E of figure 2
+% * figure2F.pdf – PDF file with panel F of figure 2
+% * figure2.csv – CSV file with data underlying panels A–F of figure 2
 %
 
-%% Specify figure name and output files
+%% Specify figure names and output files
+
+clear figureName figureFile
 
 % Define figure number and panels
 number = '2';
 panel = {'A', 'B', 'C', 'D', 'E', 'F'};
 
-% Construct figure names and file names
-clear figureName figureFile
-for iPanel = 1:6
+% Construct figure names and files
+for iPanel = 1 : 6
 	figureName{iPanel} = ['Figure ', number, panel{iPanel}];
     figureFile{iPanel} = fullfile(outputFolder, ['figure', number, panel{iPanel}, '.pdf']);
 end
+
+% Construct data file
 dataFile = fullfile(outputFolder, ['figure', number, '.csv']);
 
 %% Get data
@@ -54,7 +57,7 @@ breakDate = getBreak(inputFolder);
 %% Construct branches of Beveridge curve
 
 % Construct start and end dates for branches
-startBranch = [1951; breakDate+0.25];
+startBranch = [1951; breakDate + 0.25];
 endBranch = [breakDate; 2019.75];
 nBranch = numel(startBranch);
 
@@ -68,37 +71,38 @@ end
 
 for iBranch = 1 : nBranch
 
+	% Create figure
 	fig = figure('NumberTitle', 'off', 'Name', figureName{iBranch});
 	hold on
 	
 	% Set figure to 4:3 ratio
 	widthFigure = 8.5;
 	heightFigure = 6.375;
-	fig.Position = [1,1,widthFigure,heightFigure];
-	fig.PaperPosition = [0, 0, widthFigure,heightFigure];
-	fig.PaperSize = [widthFigure,heightFigure];
+	fig.Position = [1, 1, widthFigure, heightFigure];
+	fig.PaperPosition = [0, 0, widthFigure, heightFigure];
+	fig.PaperSize = [widthFigure, heightFigure];
 
 	% Format axes
 	ax = gca;
 	ax.FontSize = 26;
 	ax.LineWidth = 1.3;
 	ax.XGrid = 'on';
-	ax.TickLength = [0 0];
+	ax.TickLength = [0, 0];
 
 	% Format x-axis
-	ax.XLim = log([0.02,0.16]);
-	ax.XTick =  log([0.02,0.04,0.08,0.16]);
-	ax.XTickLabel = [' 2%'; ' 4%'; ' 8%'; '16%'];
-	ax.XLabel.String =  'Unemployment rate (log scale)';
+	ax.XLim = log([0.02, 0.16]);
+	ax.XTick = log([0.02, 0.04, 0.08, 0.16]);
+	ax.XTickLabel = [' 2'; ' 4'; ' 8'; '16'];
+	ax.XLabel.String = 'Unemployment rate (percent on log scale)';
 
 	% Format y-axis
-	ax.YLim = log([0.01,0.08]);
-	ax.YTick =  log([0.01,0.02,0.04,0.08]);
-	ax.YTickLabel = ['1%'; '2%'; '4%'; '8%'];
-	ax.YLabel.String =  'Vacancy rate (log scale)';
+	ax.YLim = log([0.01, 0.08]);
+	ax.YTick = log([0.01, 0.02, 0.04, 0.08]);
+	ax.YTickLabel = ['1'; '2'; '4'; '8'];
+	ax.YLabel.String = 'Vacancy rate (percent on log scale)';
 
 	% Slightly adjust axes position for better layout
-	ax.Position = ax.Position + [0.002,0.002,0,0]; 
+	ax.Position = ax.Position + [0.002, 0.002, 0, 0]; 
 
 	% Plot background Beveridge curve
 	h1 = plot(log(u), log(v));
@@ -126,7 +130,7 @@ end
 %% Save figure data
 
 % Create empty matrix for data
-data = zeros(numel(timeline), 3 + 2.*nBranch);
+data = zeros(numel(timeline), 3 + 2 .* nBranch);
 
 %Create initial header
 header = {'Year', 'Unemployment rate', 'Vacancy rate'};
@@ -138,13 +142,13 @@ data(:, 3) = v;
 
 % Add data for each branch
 for iBranch = 1 : nBranch
-	header = {header{:},['Unemployment rate: branch ',num2str(iBranch)],['Vacancy rate: branch ',num2str(iBranch)]};
-	data(branch{iBranch}, 3+iBranch.*2-1) = u(branch{iBranch});
-	data(branch{iBranch}, 3+iBranch.*2) = v(branch{iBranch});
+	header = {header{:}, ['Unemployment rate: branch ', num2str(iBranch)], ['Vacancy rate: branch ', num2str(iBranch)]};
+	data(branch{iBranch}, 3 + iBranch .* 2 - 1) = u(branch{iBranch});
+	data(branch{iBranch}, 3 + iBranch .* 2) = v(branch{iBranch});
 end
 
 % Write header
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write data
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')

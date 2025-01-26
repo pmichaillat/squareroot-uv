@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * epsilon – 276-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * epsilon – 276-by-1 numeric column vector with Beveridge elasticity
 %
 %% Description
 %
@@ -23,4 +23,4 @@
 function epsilon = getElasticity(inputFolder)
 
 % Read Beveridge elasticity
-epsilon = readmatrix(fullfile(inputFolder,'figure6.csv'), 'Range', 'C3:C278');
+epsilon = readmatrix(fullfile(inputFolder, 'figure6.csv'), 'Range', 'C3:C278');

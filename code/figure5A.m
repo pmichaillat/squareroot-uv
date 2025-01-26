@@ -1,10 +1,10 @@
 %% figure5A.m
 % 
-% Produce figure 5A
+% Produce panel A of figure 5
 %
 %% Description
 %
-% This script produces figure 5A and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1930Q1–1950Q4.
+% This script produces panel A of figure 5 and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1930Q1–1950Q4.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure5A.pdf – PDF file with figure 5A
-% * figure5A.csv – CSV file with data underlying figure 5A
-% * figure5A.md – Markdown file with numerical results from figure 5A
+% * figure5A.pdf – PDF file with panel A of figure 5
+% * figure5A.csv – CSV file with data underlying panel A of figure 5
+% * figure5A.md – Markdown file with numerical results from panel A of figure 5
 %
 
 %% Specify figure name and output files
@@ -57,9 +57,9 @@ set(ax, xDepression{:})
 
 % Format y-axis
 ax.YLim = [0, 0.3];
-ax.YTick =  [0:0.05:0.3];
-ax.YTickLabel = [' 0%'; ' 5%'; '10%'; '15%'; '20%'; '25%'; '30%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.05 : 0.3];
+ax.YTickLabel = [' 0'; ' 5'; '10'; '15'; '20'; '25'; '30'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -74,12 +74,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+header = {'Year', 'Unemployment rate', 'Vacancy rate'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, v];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

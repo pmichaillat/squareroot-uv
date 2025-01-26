@@ -8,23 +8,15 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * startRecession – 15-by-1 column vector
-% * endRecession – 15-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * startRecession – 15-by-1 numeric column vector with recession start dates
+% * endRecession – 15-by-1 numeric column vector with recession end dates
 %
 %% Description
 %
 % This function returns the start dates and end dates of US recessions between 1930Q1 and 2024Q2.
 %
-% * The start dates are stored in startRecession.
-% * The end dates are stored in endRecession.
-%
-% The dates are expressed in year.quarter format:
-%
-% * 1951.0 is 1951Q1.
-% * 1951.25 is 1951Q2.
-% * 1951.5 is 1951Q3.
-% * 1951.75 is 1951Q4.
+% The dates are expressed numerically in year.quarter format. For instance, 1951.0 is 1951Q1, 1951.25 is 1951Q2, 1951.5 is 1951Q3, and 1951.75 is 1951Q4.
 %
 
 function [startRecession, endRecession] = getRecession(inputFolder)

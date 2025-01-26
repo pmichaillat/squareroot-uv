@@ -1,10 +1,10 @@
 %% figure8B.m
 % 
-% Produce figure 8B
+% Produce panel B of figure 8
 %
 %% Description
 %
-% This script produces figure 8B and associated numerical results. The figure displays the quarterly labor-market tightness in the United States, 2020Q1–2024Q2.
+% This script produces panel B of figure 8 and associated numerical results. The figure displays the quarterly labor market tightness in the United States, 2020Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure8B.pdf – PDF file with figure 8B
-% * figure8B.csv – CSV file with data underlying figure 8B
-% * figure8B.md – Markdown file with numerical results from figure 8B
+% * figure8B.pdf – PDF file with panel B of figure 8
+% * figure8B.csv – CSV file with data underlying panel B of figure 8
+% * figure8B.md – Markdown file with numerical results from panel B of figure 8
 %
 
 %% Specify figure name and output files
@@ -46,7 +46,7 @@ u = getUnemploymentPandemic(inputFolder);
 % Get vacancy rate
 v = getVacancyPandemic(inputFolder);
 
-%% Compute labor-market tightness
+%% Compute labor market tightness
 
 tightness = v ./ u;
 
@@ -61,17 +61,17 @@ set(ax, xPandemic{:})
 
 % Format y-axis
 ax.YLim = [0, 2];
-ax.YTick =  [0:0.5:2];
-ax.YLabel.String =  'Labor-market tightness';
+ax.YTick = [0 : 0.5 : 2];
+ax.YLabel.String = 'Labor market tightness';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint tightness gap with distinct colors for positive and negative gaps
-h = area(timeline, [ones(size(tightness)), min(tightness - 1,0), max(tightness - 1,0)]);
+h = area(timeline, [ones(size(tightness)), min(tightness - 1, 0), max(tightness - 1, 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
-% Plot labor-market tightness
+% Plot labor market tightness
 plot(timeline, tightness, orangeLine{:})
 
 % Plot full-employment line
@@ -88,7 +88,7 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, tightness];
-writematrix(round(data,2), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 2), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
@@ -104,9 +104,9 @@ fclose(fid);
 % Display and save results
 diary(resultFile)
 fprintf('\n')
-fprintf('* Average labor-market tightness: %4.2f \n', tightnessMean)
-fprintf('* Maximum labor-market tightness: %4.2f in %4.2f \n', tightnessMax, timeline(iMax))
-fprintf('* Minimum labor-market tightness: %4.2f in %4.2f \n', tightnessMin, timeline(iMin))
-fprintf('* Labor-market tightness in 2024Q2: %4.2f \n', tightness(end))
+fprintf('* Average labor market tightness: %4.2f \n', tightnessMean)
+fprintf('* Maximum labor market tightness: %4.2f in %4.2f \n', tightnessMax, timeline(iMax))
+fprintf('* Minimum labor market tightness: %4.2f in %4.2f \n', tightnessMin, timeline(iMin))
+fprintf('* Labor market tightness in 2024Q2: %4.2f \n', tightness(end))
 fprintf('\n')
 diary off

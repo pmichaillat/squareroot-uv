@@ -61,20 +61,20 @@ set(ax, x{:})
 
 % Format y-axis
 ax.YLim = log([0.005, 0.3]);
-ax.YTick =  log([0.005, 0.01, 0.02, 0.04, 0.08, 0.15, 0.3]);
-ax.YTickLabel = ['0.5%'; '  1%'; '  2%'; '  4%'; '  8%'; ' 15%'; ' 30%'];
-ax.YLabel.String =  'Share of labor force (log scale)';
+ax.YTick = log([0.005, 0.01, 0.02, 0.04, 0.08, 0.15, 0.3]);
+ax.YTickLabel = ['0.5'; '  1'; '  2'; '  4'; '  8'; ' 15'; ' 30'];
+ax.YLabel.String = 'Share of labor force (percent on log scale)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint gap between unemployment and vacancy rates with distinct colors for positive and negative gaps
-h = area(timeline, [log(uStar), max(log(u) - log(uStar),0), min(log(u) - log(uStar),0)]);
+h = area(timeline, [log(uStar), max(log(u) - log(uStar), 0), min(log(u) - log(uStar), 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment rate, vacancy rate, and FERU
-plot(timeline, log(u), purpleThinLine{:})
-plot(timeline, log(v), orangeDotDashThinLine{:})
+plot(timeline, log(u), purpleMediumLine{:})
+plot(timeline, log(v), orangeDotDashMediumLine{:})
 plot(timeline, log(uStar), pinkLine{:})
 
 % Hide black box on top of figure
@@ -86,12 +86,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
+header = {'Year', 'Unemployment rate', 'Vacancy rate', 'FERU'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, v, uStar];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

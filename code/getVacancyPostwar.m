@@ -8,36 +8,36 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * v – 276-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * v – 276-by-1 numeric column vector with vacancy rate
 %
 %% Description
 %
 % This function constructs and returns the quarterly vacancy rate for the United States, 1951Q1–2019Q4:
 %
-% * Reads the monthly vacancy rate, 1951Q1–2000Q4.
-% * Reads the monthly vacancy and labor-force levels, 2001Q1–2019Q4.
-% * Calculates the monthly vacancy rate, 2001Q1–2019Q4, by dividing vacancy level by labor-force level. 
-% * Produces the monthly vacancy rate, 1951Q1–2019Q4, by splicing the two monthly vacancy-rate series.
-% * Returns the quarterly average of the monthly vacancy rate. 
+% * Reads the monthly vacancy rate, 1951Q1–2000Q4
+% * Reads the monthly vacancy and labor force levels, 2001Q1–2019Q4
+% * Calculates the monthly vacancy rate, 2001Q1–2019Q4, by dividing vacancy level by labor force level 
+% * Produces the monthly vacancy rate, 1951Q1–2019Q4, by splicing the two monthly vacancy-rate series
+% * Returns the quarterly average of the monthly vacancy rate 
 %
 %% Data source
 %
 % * Monthly vacancy rate, 1951Q1–2000Q4 – Barnichon (2010)
-% * Monthly vacancy level, 2001Q1–2019Q4 – US Bureau of Labor Statistics (2024f)
-% * Monthly labor-force level, 2001Q1–2019Q4 – US Bureau of Labor Statistics (2024a)
+% * Monthly vacancy level, 2001Q1–2019Q4 – Bureau of Labor Statistics (2024f)
+% * Monthly labor force level, 2001Q1–2019Q4 – Bureau of Labor Statistics (2024a)
 %
 
 function v = getVacancyPostwar(inputFolder)
 
 % Read monthly vacancy rate for 1951Q1–2000Q4
-vRate1951 = readmatrix(fullfile(inputFolder,'CompositeHWI.xlsx - Sheet1.csv'), 'Range', 'C9:C608')./100;
+vRate1951 = readmatrix(fullfile(inputFolder, 'CompositeHWI.xlsx - Sheet1.csv'), 'Range', 'C9:C608') ./ 100;
 
 % Read monthly vacancy level for 2001Q1–2019Q4
-vLevel2001 = readmatrix(fullfile(inputFolder,'JTSJOL.csv'), 'Range', 'B2:B229');
+vLevel2001 = readmatrix(fullfile(inputFolder, 'JTSJOL.csv'), 'Range', 'B2:B229');
 
-% Read monthly labor-force level for 2001Q1–2019Q4
-laborforce = readmatrix(fullfile(inputFolder,'CLF16OV.csv'), 'Range', 'B638:B865');
+% Read monthly labor force level for 2001Q1–2019Q4
+laborforce = readmatrix(fullfile(inputFolder, 'CLF16OV.csv'), 'Range', 'B638:B865');
 
 % Compute monthly vacancy rate for 2001Q1–2019Q4
 vRate2001 = vLevel2001 ./ laborforce;

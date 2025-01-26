@@ -10,13 +10,13 @@
 %
 % If the function is applied to a single series:
 %
-% * data – N-by-1 column vector
-% * result – (N/3)-by-1 column vector
+% * data – N-by-1 numeric column vector
+% * result – (N/3)-by-1 numeric column vector
 % 
 % If the function is applied to M series:
 %
-% * data – N-by-M matrix
-% * result – (N/3)-by-M matrix
+% * data – N-by-M numeric matrix
+% * result – (N/3)-by-M numeric matrix
 %
 %% Description
 %
@@ -47,7 +47,7 @@ assert(mod(row,3) == 0, 'Number of monthly observations must be divisible by 3 f
 L = reshape(data, 3, row/3, col);
 
 % Average the 3 monthly observations in L(:,i,j) for all series in all quarters
-M = mean(L,1);
+M = mean(L, 1);
 
 % Shift the dimensions of M so that the series are organized by columns again
 result = shiftdim(M);

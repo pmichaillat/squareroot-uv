@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * nrust - 288-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * nrust - 288-by-1 numeric column vector with short-term NRU
 %
 %% Description
 %
@@ -17,10 +17,10 @@
 %
 %% Data source
 %
-% * US Congressional Budget Office (2021)
+% * Congressional Budget Office (2021)
 %
 
 function nrust = getNrust(inputFolder)
 
 % Read short-term NRU
-nrust = readmatrix(fullfile(inputFolder,'NROUST.csv'), 'Range', 'B2:B289')./100;
+nrust = readmatrix(fullfile(inputFolder, 'NROUST.csv'), 'Range', 'B2:B289') ./ 100;

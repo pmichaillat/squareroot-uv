@@ -1,10 +1,10 @@
 %% figure1A.m
 % 
-% Produce figure 1A
+% Produce panel A of figure 1
 %
 %% Description
 %
-% This script produces figure 1A and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1951Q1–2019Q4.
+% This script produces panel A of figure 1 and associated numerical results. The figure displays the quarterly unemployment and vacancy rates in the United States, 1951Q1–2019Q4.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure1A.pdf – PDF file with figure 1A
-% * figure1A.csv – CSV file with data underlying figure 1A
-% * figure1A.md – Markdown file with numerical results from figure 1A
+% * figure1A.pdf – PDF file with panel A of figure 1
+% * figure1A.csv – CSV file with data underlying panel A of figure 1
+% * figure1A.md – Markdown file with numerical results from panel A of figure 1
 %
 
 %% Specify figure name and output files
@@ -57,9 +57,9 @@ set(ax, xPostwar{:})
 
 % Format y-axis
 ax.YLim = [0, 0.12];
-ax.YTick =  [0:0.02:0.12];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.12];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -79,7 +79,7 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write data
 data = [timeline, u, v];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

@@ -1,10 +1,10 @@
 %% figure3A.m
 % 
-% Produce figure 3A
+% Produce panel A of figure 3
 %
 %% Description
 %
-% This script produces figure 3A. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 1951Q1–2019Q4.
+% This script produces panel A of figure 3. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 1951Q1–2019Q4.
 %
 %% Requirements
 %
@@ -14,8 +14,8 @@
 %
 %% Output
 %
-% * figure3A.pdf – PDF file with figure 3A
-% * figure3A.csv – CSV file with data underlying figure 3A
+% * figure3A.pdf – PDF file with panel A of figure 3
+% * figure3A.csv – CSV file with data underlying panel A of figure 3
 %
 
 %% Specify figure name and output files
@@ -55,15 +55,15 @@ set(ax, xPostwar{:})
 
 % Format y-axis
 ax.YLim = [0, 0.12];
-ax.YTick =  [0:0.02:0.12];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.12];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint gap between unemployment and vacancy rates with distinct colors for positive and negative gaps
-h = area(timeline, [v, max(u - v,0), min(u - v,0)]);
+h = area(timeline, [v, max(u - v, 0), min(u - v, 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment and vacancy rates
@@ -81,4 +81,4 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, v];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')

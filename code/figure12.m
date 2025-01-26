@@ -4,7 +4,7 @@
 %
 %% Description
 %
-% This script produces figure 12 and associated numerical results. The figure displays on a log scale the quarterly labor-market tightness in the United States, 1930Q1–2024Q2.
+% This script produces figure 12 and associated numerical results. The figure displays on a log scale the quarterly labor market tightness in the United States, 1930Q1–2024Q2.
 %
 %% Requirements
 %
@@ -46,7 +46,7 @@ u = getUnemployment(inputFolder);
 % Get vacancy rate
 v = getVacancy(inputFolder);
 
-%% Compute labor-market tightness
+%% Compute labor market tightness
 
 tightness = v ./ u;
 
@@ -61,18 +61,18 @@ set(ax, x{:})
 
 % Format y-axis
 ax.YLim = log([0.03, 8]);
-ax.YTick =  log([0.03,0.1,0.3,1,2,4,8]);
-ax.YTickLabel = ['0.03'; ' 0.1';' 0.3'; '   1'; '   2'; '   4'; '   8'];
-ax.YLabel.String =  'Labor-market tightness (log scale)';
+ax.YTick = log([0.03, 0.1, 0.3, 1, 2, 4, 8]);
+ax.YTickLabel = ['0.03'; ' 0.1'; ' 0.3'; '   1'; '   2'; '   4'; '   8'];
+ax.YLabel.String = 'Labor market tightness (log scale)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint tightness gap with distinct colors for positive and negative gaps
-h = area(timeline, [zeros(size(log(tightness))), min(log(tightness),0), max(log(tightness),0)]);
+h = area(timeline, [zeros(size(log(tightness))), min(log(tightness), 0), max(log(tightness), 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
-% Plot labor-market tightness
+% Plot labor market tightness
 plot(timeline, log(tightness), orangeLine{:})
 
 % Plot full-employment line
@@ -89,7 +89,7 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, tightness];
-writematrix(round(data,2), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 2), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 
@@ -108,11 +108,11 @@ fclose(fid);
 % Display and save results
 diary(resultFile)
 fprintf('\n')
-fprintf('* Average labor-market tightness: %4.2f \n', tightnessMean)
-fprintf('* Maximum labor-market tightness: %4.2f in %4.2f \n', tightnessMax, timeline(iMax))
-fprintf('* Minimum labor-market tightness: %4.2f in %4.2f \n', tightnessMin, timeline(iMin))
-fprintf('* Average labor-market tightness over 1942–1945: %4.2f \n', tightness4245)
-fprintf('* Average labor-market tightness over 1951–1953: %4.2f \n', tightness5153)
-fprintf('* Average labor-market tightness over 1966–1969: %4.2f \n', tightness6669)
+fprintf('* Average labor market tightness: %4.2f \n', tightnessMean)
+fprintf('* Maximum labor market tightness: %4.2f in %4.2f \n', tightnessMax, timeline(iMax))
+fprintf('* Minimum labor market tightness: %4.2f in %4.2f \n', tightnessMin, timeline(iMin))
+fprintf('* Average labor market tightness over 1942–1945: %4.2f \n', tightness4245)
+fprintf('* Average labor market tightness over 1951–1953: %4.2f \n', tightness5153)
+fprintf('* Average labor market tightness over 1966–1969: %4.2f \n', tightness6669)
 fprintf('\n')
 diary off

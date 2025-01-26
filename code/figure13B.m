@@ -1,10 +1,10 @@
 %% figure13B.m
 % 
-% Produce figure 13B
+% Produce panel B of figure 13
 %
 %% Description
 %
-% This script produces figure 13B and associated numerical results. The figure displays the quarterly FERU in the United States, 1930Q1–2024Q2, for a range of alternative calibrations:
+% This script produces panel B of figure 13 and associated numerical results. The figure displays the quarterly FERU in the United States, 1930Q1–2024Q2, for a range of alternative calibrations:
 %
 % * Beveridge elasticity between 0.75 and 1.25
 % * Recruiting cost between 0.75 and 1.25
@@ -20,9 +20,9 @@
 %
 %% Output
 %
-% * figure13B.pdf – PDF file with figure 13B
-% * figure13B.csv – CSV file with data underlying figure 13B
-% * figure13B.md – Markdown file with numerical results from figure 13B
+% * figure13B.pdf – PDF file with panel B of figure 13
+% * figure13B.csv – CSV file with data underlying panel B of figure 13
+% * figure13B.md – Markdown file with numerical results from panel B of figure 13
 %
 
 %% Specify figure name and output files
@@ -101,9 +101,9 @@ set(ax, x{:})
 
 % Format y-axis
 ax.YLim = [0, 0.08];
-ax.YTick =  [0:0.02:0.08];
-ax.YTickLabel = ['0%'; '2%'; '4%'; '6%'; '8%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.08];
+ax.YTickLabel = ['0'; '2'; '4'; '6'; '8'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -164,7 +164,7 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, uStarBaseline, uStarEpsilonLow, uStarEpsilonHigh, uStarKappaLow, uStarKappaHigh, uStarZetaLow, uStarZetaHigh];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

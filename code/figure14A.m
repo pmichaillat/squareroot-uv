@@ -1,10 +1,10 @@
 %% figure14A.m
 % 
-% Produce figure 14A
+% Produce panel A of figure 14
 %
 %% Description
 %
-% This script produces figure 14A and associated numerical results. The figure displays 3 variants of the quarterly FERU in the United States, 1994Q1–2024Q2:
+% This script produces panel A of figure 14 and associated numerical results. The figure displays 3 variants of the quarterly FERU in the United States, 1994Q1–2024Q2:
 %
 % * FERU based on concept U3 of unemployment
 % * FERU based on concept U4 of unemployment
@@ -18,9 +18,9 @@
 %
 %% Output
 %
-% * figure14A.pdf – PDF file with figure 14A
-% * figure14A.csv – CSV file with data underlying figure 14A
-% * figure14A.md – Markdown file with numerical results from figure 14A
+% * figure14A.pdf – PDF file with panel A of figure 14
+% * figure14A.csv – CSV file with data underlying panel A of figure 14
+% * figure14A.md – Markdown file with numerical results from panel A of figure 14
 %
 
 %% Specify figure name and output files
@@ -70,9 +70,9 @@ set(ax, x345{:})
 
 % Format y-axis
 ax.YLim = [0, 0.08];
-ax.YTick =  [0:0.02:0.08];
-ax.YTickLabel = ['0%'; '2%'; '4%'; '6%'; '8%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.08];
+ax.YTickLabel = ['0'; '2'; '4'; '6'; '8'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -99,7 +99,7 @@ writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, uStar3, uStar4, uStar5];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

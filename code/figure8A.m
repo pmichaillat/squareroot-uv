@@ -1,10 +1,10 @@
 %% figure8A.m
 % 
-% Produce figure 8A
+% Produce panel A of figure 8
 %
 %% Description
 %
-% This script produces figure 8A and associated numerical results. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 2020Q1–2024Q2.
+% This script produces panel A of figure 8 and associated numerical results. The figure displays the gap between the quarterly unemployment and vacancy rates in the United States, 2020Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure8A.pdf – PDF file with figure 8A
-% * figure8A.csv – CSV file with data underlying figure 8A
-% * figure8A.md – Markdown file with numerical results from figure 8A
+% * figure8A.pdf – PDF file with panel A of figure 8
+% * figure8A.csv – CSV file with data underlying panel A of figure 8
+% * figure8A.md – Markdown file with numerical results from panel A of figure 8
 %
 
 %% Specify figure name and output files
@@ -57,15 +57,15 @@ set(ax, xPandemic{:})
 
 % Format y-axis
 ax.YLim = [0, 0.14];
-ax.YTick =  [0:0.02:0.14];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.14];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'; '14'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint gap between unemployment and vacancy rates with distinct colors for positive and negative gaps
-h = area(timeline, [v, max(u - v,0), min(u - v,0)]);
+h = area(timeline, [v, max(u - v, 0), min(u - v, 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment and vacancy rates
@@ -78,12 +78,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+header = {'Year', 'Unemployment rate', 'Vacancy rate'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, v];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * nairu - 256-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * nairu - 256-by-1 numeric column vector with NAIRU
 %
 %% Description
 %
@@ -23,4 +23,4 @@
 function nairu = getNairu(inputFolder)
 
 % Read NAIRU
-nairu = readmatrix(fullfile(inputFolder,'ustar.csv'), 'Range', 'C2:C257')./100;
+nairu = readmatrix(fullfile(inputFolder, 'ustar.csv'), 'Range', 'C2:C257') ./ 100;

@@ -1,10 +1,10 @@
 %% figure9A.m
 % 
-% Produce figure 9A
+% Produce panel A of figure 9
 %
 %% Description
 %
-% This script produces figure 9A and associated numerical results. The figure displays the quarterly unemployment rate, vacancy rate, and FERU in the United States, 2020Q1–2024Q2.
+% This script produces panel A of figure 9 and associated numerical results. The figure displays the quarterly unemployment rate, vacancy rate, and FERU in the United States, 2020Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure9A.pdf – PDF file with figure 9A
-% * figure9A.csv – CSV file with data underlying figure 9A
-% * figure9A.md – Markdown file with numerical results from figure 9A
+% * figure9A.pdf – PDF file with panel A of figure 9
+% * figure9A.csv – CSV file with data underlying panel A of figure 9
+% * figure9A.md – Markdown file with numerical results from panel A of figure 9
 %
 
 %% Specify figure name and output files
@@ -61,16 +61,16 @@ set(ax, xPandemic{:})
 
 % Format y-axis
 ax.YLim = [0, 0.14];
-ax.YTick =  [0:0.02:0.14];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.14];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'; '14'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Plot unemployment rate, vacancy rate, and FERU
-plot(timeline, u, purpleThinLine{:})
-plot(timeline, v, orangeDotDashThinLine{:})
+plot(timeline, u, purpleMediumLine{:})
+plot(timeline, v, orangeDotDashMediumLine{:})
 plot(timeline, uStar, pinkLine{:})
 
 % Save figure
@@ -79,12 +79,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate', 'FERU'};
+header = {'Year', 'Unemployment rate', 'Vacancy rate', 'FERU'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, v, uStar];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

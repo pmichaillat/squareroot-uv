@@ -1,10 +1,10 @@
 %% figure13A.m
 % 
-% Produce figure 13A
+% Produce panel A of figure 13
 %
 %% Description
 %
-% This script produces figure 13A and associated numerical results. The figure displays two variants of the quarterly FERU in the United States, 1951Q1–2019Q4. The variants are computed as follows:
+% This script produces panel A of figure 13 and associated numerical results. The figure displays two variants of the quarterly FERU in the United States, 1951Q1–2019Q4. The variants are computed as follows:
 %
 % * With simple formula (2)
 % * With generalized formula (8) calibrated as in Michaillat and Saez (2021a)
@@ -17,9 +17,9 @@
 %
 %% Output
 %
-% * figure13A.pdf – PDF file with figure 13A
-% * figure13A.csv – CSV file with data underlying figure 13A
-% * figure13A.md – Markdown file with numerical results from figure 13A
+% * figure13A.pdf – PDF file with panel A of figure 13
+% * figure13A.csv – CSV file with data underlying panel A of figure 13
+% * figure13A.md – Markdown file with numerical results from panel A of figure 13
 %
 
 %% Specify figure name and output files
@@ -79,9 +79,9 @@ set(ax, xPostwar{:})
 
 % Format y-axis
 ax.YLim = [0, 0.08];
-ax.YTick =  [0:0.02:0.08];
-ax.YTickLabel = ['0%'; '2%'; '4%'; '6%'; '8%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.08];
+ax.YTickLabel = ['0'; '2'; '4'; '6'; '8'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -101,12 +101,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'FERU', 'Generalized FERU'};
+header = {'Year', 'FERU', 'Generalized FERU'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, uStar, uStarGeneralized];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

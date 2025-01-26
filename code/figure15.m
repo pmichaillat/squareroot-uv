@@ -78,9 +78,9 @@ set(ax, x{:})
 
 % Format y-axis
 ax.YLim = [0, 0.1];
-ax.YTick =  [0:0.02:0.1];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.1];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -121,20 +121,20 @@ data(:, 2) = uStar;
 % Add NRU data
 idx = find(timeline == timelineNru(1));
 n = numel(nru);
-data(idx:idx+n-1, 3) = nru;
+data(idx : idx + n - 1, 3) = nru;
 
 % Add NRUST data
 idx = find(timeline == timelineNrust(1));
 n = numel(nrust);
-data(idx:idx+n-1, 4) = nrust;
+data(idx : idx + n - 1, 4) = nrust;
 
 % Add NAIRU data
 idx = find(timeline == timelineNairu(1));
 n = numel(nairu);
-data(idx:idx+n-1, 5) = nairu;
+data(idx : idx + n - 1, 5) = nairu;
 
 % Write data
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

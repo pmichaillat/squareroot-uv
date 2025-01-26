@@ -1,10 +1,10 @@
 %% figure9B.m
 % 
-% Produce figure 9B
+% Produce panel B of figure 9
 %
 %% Description
 %
-% This script produces figure 9B and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 2020Q1–2024Q2.
+% This script produces panel B of figure 9 and associated numerical results. The figure displays the quarterly unemployment gap in the United States, 2020Q1–2024Q2.
 %
 %% Requirements
 %
@@ -14,9 +14,9 @@
 %
 %% Output
 %
-% * figure9B.pdf – PDF file with figure 9B
-% * figure9B.csv – CSV file with data underlying figure 9B
-% * figure9B.md – Markdown file with numerical results from figure 9B
+% * figure9B.pdf – PDF file with panel B of figure 9
+% * figure9B.csv – CSV file with data underlying panel B of figure 9
+% * figure9B.md – Markdown file with numerical results from panel B of figure 9
 %
 
 %% Specify figure name and output files
@@ -65,19 +65,19 @@ set(ax, xPandemic{:})
 
 % Format y-axis
 ax.YLim = [0, 0.14];
-ax.YTick =  [0:0.02:0.14];
-ax.YTickLabel = [' 0%'; ' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [0 : 0.02 : 0.14];
+ax.YTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'; '14'];
+ax.YLabel.String = 'Share of labor force (percent)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
 
 % Paint unemployment gap with distinct colors for positive and negative gaps
-h = area(timeline, [uStar, max(u - uStar,0), min(u - uStar,0)]);
+h = area(timeline, [uStar, max(u - uStar, 0), min(u - uStar, 0)]);
 set(h, {'FaceAlpha', 'FaceColor', 'LineStyle'}, purpleOrangeArea);
 
 % Plot unemployment rate and FERU
-plot(timeline, u, purpleThinLine{:})
+plot(timeline, u, purpleMediumLine{:})
 plot(timeline, uStar, pinkLine{:})
 
 % Save figure
@@ -86,12 +86,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'FERU', 'Unemployment gap'};
+header = {'Year', 'Unemployment rate', 'FERU', 'Unemployment gap'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, u, uStar, gap];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

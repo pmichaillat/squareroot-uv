@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * v – 84-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * v – 84-by-1 numeric column vector with vacancy rate
 %
 %% Description
 %
@@ -23,7 +23,7 @@
 function v = getVacancyDepression(inputFolder)
 
 % Read monthly vacancy rate
-vMonthly = readmatrix(fullfile(inputFolder,'HistoricalSeries_JME_2020January.csv'), 'Range', 'D486:D737')./100;
+vMonthly = readmatrix(fullfile(inputFolder, 'HistoricalSeries_JME_2020January.csv'), 'Range', 'D486:D737') ./ 100;
 
 % Take quarterly average of monthly series
 v = monthly2quarterly(vMonthly);

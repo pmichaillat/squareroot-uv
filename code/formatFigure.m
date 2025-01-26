@@ -30,9 +30,9 @@ createProperty = @(obj) [fieldnames(obj), struct2cell(obj)]';
 widthFigure = 10;
 heightFigure = 5.625;
 set(groot, 'defaultFigureUnits', 'inches')
-set(groot, 'defaultFigurePosition', [1,1,widthFigure,heightFigure]);
-set(groot, 'defaultFigurePaperPosition', [0, 0, widthFigure,heightFigure]);
-set(groot, 'defaultFigurePaperSize', [widthFigure,heightFigure]);
+set(groot, 'defaultFigurePosition', [1, 1, widthFigure, heightFigure]);
+set(groot, 'defaultFigurePaperPosition', [0, 0, widthFigure, heightFigure]);
+set(groot, 'defaultFigurePaperSize', [widthFigure, heightFigure]);
 set(groot, 'defaultAxesFontName', 'Helvetica')
 set(groot, 'defaultAxesFontSize', 15)
 set(groot, 'defaultAxesLabelFontSizeMultiplier', 1)
@@ -46,7 +46,7 @@ set(groot, 'defaultAxesYGrid', 'on')
 set(groot, 'defaultAxesXGrid', 'off')
 set(groot, 'defaultAxesTickDirMode', 'manual')
 set(groot, 'defaultAxesTickDir', 'out')
-set(groot,'defaultAxesTickLength', [0.005 0.005])
+set(groot, 'defaultAxesTickLength', [0.005, 0.005])
 set(groot, 'defaultAxesMinorGridLineStyle', 'none')
 
 %% Predefine color palette
@@ -74,84 +74,84 @@ obj.FaceAlpha = 0.1;
 grayArea = createProperty(obj);
 
 % Define purple and orange area for gaps
-purpleOrangeArea = 	{0, purple, 'none' ;
-					0.2, purple, 'none' ; 
-					0.2, orange, 'none' };
+purpleOrangeArea = 	{0, purple, 'none';
+					0.2, purple, 'none'; 
+					0.2, orange, 'none'};
 
 %% Predefine line properties
 
-% Define solid, thick, orange line
+% Define solid thick orange line
 clear obj
 obj.Color = orange;
 obj.LineWidth = thick;
 orangeLine = createProperty(obj);
 
-% Define dot-dashed, thick, orange line
+% Define dot-dashed thick orange line
 clear obj
 obj.Color = orange;
 obj.LineWidth = thick;
 obj.LineStyle = '-.';
 orangeDotDashLine = createProperty(obj);
 
-% Define dot-dashed, medium, orange line
+% Define dot-dashed medium orange line
 clear obj
 obj.Color = orange;
 obj.LineWidth = medium;
 obj.LineStyle = '-.';
-orangeDotDashThinLine = createProperty(obj);
+orangeDotDashMediumLine = createProperty(obj);
 
-% Define solid, thick, purple line
+% Define solid thick purple line
 clear obj
 obj.Color = purple;
 obj.LineWidth = thick;
 purpleLine = createProperty(obj);
 
-% Define solid, medium, purple line
+% Define solid medium purple line
 clear obj
 obj.Color = purple;
 obj.LineWidth = medium;
-purpleThinLine = createProperty(obj);
+purpleMediumLine = createProperty(obj);
 
-% Define solid, thick, pink line
+% Define solid thick pink line
 clear obj
 obj.Color = pink;
 obj.LineWidth = thick;
 pinkLine = createProperty(obj);
 
-% Define solid, thin, pink line
+% Define solid thin pink line
 clear obj
 obj.Color = pink;
 obj.LineWidth = thin;
 pinkThinLine = createProperty(obj);
 
-%% Predefine axis properties
+%% Predefine axis properties for various periods
 
-% Define x-axis for 1930Q1–2024Q2 period
+% Define x-axis for 1930Q1–2024Q2
 clear obj
-obj.Xlim = [1930, 2024.25];
+obj.XLim = [1930, 2024.25];
 obj.XTick = [1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
 x = createProperty(obj);
 
-% Define x-axis for 1951Q1–2019Q4 period
+% Define x-axis for 1951Q1–2019Q4
 clear obj
-obj.Xlim = [1951, 2019.75];
+obj.XLim = [1951, 2019.75];
 obj.XTick = [1951, 1960, 1970, 1980, 1990, 2000, 2010, 2019];
 xPostwar = createProperty(obj);
 
-% Define x-axis for 2020Q1–2024Q2 period
+% Define x-axis for 2020Q1–2024Q2
 clear obj
-obj.Xlim = [2020, 2024.25];
+obj.XLim = [2020, 2024.25];
 obj.XTick = [2020, 2021, 2022, 2023, 2024];
 xPandemic = createProperty(obj);
 
-% Define x-axis for 1930Q1–1950Q4 period
+% Define x-axis for 1930Q1–1950Q4
 clear obj
-obj.Xlim = [1930, 1950.75];
+obj.XLim = [1930, 1950.75];
 obj.XTick = [1930, 1935, 1940, 1945, 1950];
 xDepression = createProperty(obj);
 
-% Define x-axis for 1994Q1–2024Q2 period
+% Define x-axis for 1994Q1–2024Q2
 clear obj
-obj.Xlim = [1994, 2024.25];
+obj.XLim = [1994, 2024.25];
 obj.XTick = [1994, 1999, 2004, 2009, 2014, 2019, 2024];
 x345 = createProperty(obj);

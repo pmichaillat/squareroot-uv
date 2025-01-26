@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * nru - 302-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * nru - 302-by-1 numeric column vector with NRU
 %
 %% Description
 %
@@ -17,10 +17,10 @@
 %
 %% Data source
 %
-% * US Congressional Budget Office (2024)
+% * Congressional Budget Office (2024)
 %
 
 function nru = getNru(inputFolder)
 
 % Read NRU
-nru = readmatrix(fullfile(inputFolder,'NROU.csv'), 'Range', 'B2:B303')./100;
+nru = readmatrix(fullfile(inputFolder, 'NROU.csv'), 'Range', 'B2:B303') ./ 100;

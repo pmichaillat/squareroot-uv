@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * u – 84-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * u – 84-by-1 numeric column vector with unemployment rate
 %
 %% Description
 %
@@ -23,7 +23,7 @@
 function u = getUnemploymentDepression(inputFolder)
 
 % Read monthly unemployment rate
-uMonthly = readmatrix(fullfile(inputFolder,'HistoricalSeries_JME_2020January.csv'), 'Range', 'B486:B737')./100;
+uMonthly = readmatrix(fullfile(inputFolder, 'HistoricalSeries_JME_2020January.csv'), 'Range', 'B486:B737') ./ 100;
 
 % Take quarterly average of monthly series
 u = monthly2quarterly(uMonthly);

@@ -1,10 +1,10 @@
 %% figure14B.m
 % 
-% Produce figure 14B
+% Produce panel B of figure 14
 %
 %% Description
 %
-% This script produces figure 14B and associated numerical results. The figure displays 3 variants of the quarterly unemployment gap in the United States, 1994Q1–2024Q2:
+% This script produces panel B of figure 14 and associated numerical results. The figure displays 3 variants of the quarterly unemployment gap in the United States, 1994Q1–2024Q2:
 %
 % * Unemployment gap based on concept U3 of unemployment
 % * Unemployment gap based on concept U4 of unemployment
@@ -18,9 +18,9 @@
 %
 %% Output
 %
-% * figure14B.pdf – PDF file with figure 14B
-% * figure14B.csv – CSV file with data underlying figure 14B
-% * figure14B.md – Markdown file with numerical results from figure 14B
+% * figure14B.pdf – PDF file with panel B of figure 14
+% * figure14B.csv – CSV file with data underlying panel B of figure 14
+% * figure14B.md – Markdown file with numerical results from panel B of figure 14
 %
 
 %% Specify figure name and output files
@@ -82,9 +82,9 @@ set(ax, x345{:})
 
 % Format y-axis
 ax.YLim = [-0.02, 0.08];
-ax.YTick =  [-0.02:0.02:0.08];
-ax.YTickLabel = ['-2pp'; ' 0pp'; ' 2pp'; ' 4pp'; ' 6pp'; ' 8pp'];
-ax.YLabel.String =  'Share of labor force';
+ax.YTick = [-0.02 : 0.02 : 0.08];
+ax.YTickLabel = ['-2'; ' 0'; ' 2'; ' 4'; ' 6'; ' 8'];
+ax.YLabel.String = 'Share of labor force (percentage points)';
 
 % Paint recession areas
 xregion(startRecession, endRecession, grayArea{:})
@@ -109,12 +109,12 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'U3 gap', 'U4 gap', 'U5 gap'};
+header = {'Year', 'U3 gap', 'U4 gap', 'U5 gap'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 data = [timeline, gap3, gap4, gap5];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')
 
 %% Produce numerical results
 

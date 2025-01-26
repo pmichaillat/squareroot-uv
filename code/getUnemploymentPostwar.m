@@ -8,8 +8,8 @@
 %
 %% Arguments
 %
-% * inputFolder – Path to folder with raw data
-% * u – 276-by-1 column vector
+% * inputFolder – Character array with path to raw-data folder
+% * u – 276-by-1 numeric column vector with unemployment rate
 %
 %% Description
 %
@@ -17,13 +17,13 @@
 %
 %% Data source
 %
-% * US Bureau of Labor Statistics (2024k)
+% * Bureau of Labor Statistics (2024k)
 %
 
 function u = getUnemploymentPostwar(inputFolder)
 
 % Read monthly unemployment rate
-uMonthly = readmatrix(fullfile(inputFolder,'UNRATE.csv'), 'Range', 'B38:B865')./100;
+uMonthly = readmatrix(fullfile(inputFolder, 'UNRATE.csv'), 'Range', 'B38:B865') ./ 100;
 
 % Take quarterly average of monthly series
 u = monthly2quarterly(uMonthly);

@@ -46,20 +46,20 @@ hold on
 % Format x-axis
 ax = gca;
 ax.XGrid = 'on';
-ax.TickLength = [0 0];
+ax.TickLength = [0, 0];
 ax.XLim = [0, 0.14];
-ax.XTick = [0:0.02:0.14];
-ax.XTickLabel = [' 0%';' 2%'; ' 4%'; ' 6%'; ' 8%'; '10%'; '12%'; '14%'];
-ax.XLabel.String = 'Unemployment rate';
+ax.XTick = [0 : 0.02 : 0.14];
+ax.XTickLabel = [' 0'; ' 2'; ' 4'; ' 6'; ' 8'; '10'; '12'; '14'];
+ax.XLabel.String = 'Unemployment rate (percent)';
 
 % Format y-axis
 ax.YLim = [0, 0.08];
-ax.YTick =  [0:0.02:0.08];
-ax.YTickLabel = ['0%'; '2%'; '4%'; '6%'; '8%'];
-ax.YLabel.String =  'Vacancy rate';
+ax.YTick = [0 : 0.02 : 0.08];
+ax.YTickLabel = ['0'; '2'; '4'; '6'; '8'];
+ax.YLabel.String = 'Vacancy rate (percent)';
 
 % Plot full-employment line
-uRange = [0:0.001:0.20];
+uRange = [0 : 0.001 : 0.20];
 vLine = uRange;
 plot(uRange, vLine, pinkThinLine{:})
 
@@ -98,10 +98,10 @@ print('-dpdf', figureFile)
 %% Save figure data
 
 % Write header
-header = {'Year',  'Unemployment rate', 'Vacancy rate'};
+header = {'Year', 'Unemployment rate', 'Vacancy rate'};
 writecell(header, dataFile, 'WriteMode', 'overwrite')
 
 % Write results
 timeline = [2001 : 0.25 : 2024.25]';
 data = [timeline, u, v];
-writematrix(round(data,4), dataFile, 'WriteMode', 'append')
+writematrix(round(data, 4), dataFile, 'WriteMode', 'append')

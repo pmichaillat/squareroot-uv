@@ -4,7 +4,7 @@
 %
 %% Description
 %
-% This is the main script for the paper. It constructs the 29 figures and  associated numerical results included in the paper.
+% This is the main script for the paper. It constructs the 30 figures and  associated numerical results included in the paper.
 %
 %% Output
 %
@@ -27,10 +27,10 @@ clc
 %% Specify input and output folders
 
 % Specify folder with raw data
-inputFolder = fullfile('..', 'raw');
+inputFolder = fullfile('..', '..', 'data', 'bpea', 'raw');
 
 % Specify folder with figures and numerical results
-outputFolder = fullfile('..', 'figures');
+outputFolder = fullfile('..', '..', 'data', 'bpea', 'figures');
 
 %% Format default figure and predefine plot properties
 
