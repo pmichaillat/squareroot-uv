@@ -27,10 +27,10 @@ clc
 %% Specify input and output folders
 
 % Specify folder with raw data
-inputFolder = fullfile('..', '..', 'data', 'bpea', 'raw');
+inputFolder = fullfile('..', 'raw');
 
 % Specify folder with figures and numerical results
-outputFolder = fullfile('..', '..', 'data', 'bpea', 'figures');
+outputFolder = fullfile('..', 'figures');
 
 %% Format default figure and predefine plot properties
 
