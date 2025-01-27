@@ -152,15 +152,19 @@ The 30 figures produced by the code are saved as 30 PDF files. The data used to 
 
 ## Usage
 
-To generate all figures and numerical results presented in the paper, run the following command in MATLAB:
+1. Clone the repository to your local machine using Git or by downloading the ZIP file.
+
+2. Open MATLAB and navigate to the `code` folder as the current folder.
+
+3. To generate all figures and numerical results presented in the paper, execute the following command in the MATLAB Command Window:
 
 ```matlab
 run('main.m')
 ```
 
-Before running the script, ensure you save a copy of the `figures` folder, as all files in that folder will be overwritten by the code when new figures are generated.
+4. The main script will overwrite all files in the `figures` folder by default. So if you wish to preserve the existing outputs, save a copy of the `figures` folder before running the script.
 
-Alternatively, you can save the new files produced by the code in a new folder. To do this, create a new folder `newfigures`, and then in `main.m`, adjust the output folder with the following line:
+5. To prevent overwriting the original `figures` folder, you can direct the outputs to a new folder. First, create a new folder named `newfigures`. Then, modify the `outputFolder` variable in `main.m`:
 
 ```matlab
 outputFolder = fullfile('..', 'newfigures');
