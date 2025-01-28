@@ -162,9 +162,9 @@ The 30 figures produced by the code are saved as 30 PDF files. The data used to 
 run('main.m')
 ```
 
-4. The main script will overwrite all files in the `figures` folder by default. So if you wish to preserve the existing outputs, save a copy of the `figures` folder before running the script.
+4. The main script will overwrite all files in the `figures` folder by default. So if you wish to preserve the existing files, save a copy of the `figures` folder before running the script.
 
-5. To prevent overwriting the original `figures` folder, you can direct the outputs to a new folder. First, create a new folder named `newfigures`. Then, modify the `outputFolder` variable in `main.m`:
+5. To prevent overwriting the original `figures` folder, you can direct the output to a new folder. First, create a new folder named `newfigures`. Then, modify the `outputFolder` variable in `main.m`:
 
 ```matlab
 outputFolder = fullfile('..', 'newfigures');
